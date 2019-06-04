@@ -1,0 +1,310 @@
+@charset "utf-8";
+@import "variable";
+
+/**
+* 自定义样式 覆盖Element UI的样式
+ */
+.full-btn {
+  width: 100%;
+}
+
+.three-btn {
+  width: 30%;
+}
+
+.el-message {
+  width: 80%;
+  min-width: auto;
+}
+
+// 抽屉样式
+.drawer {
+  top: 60px !important;
+
+  .drawer-wrap {
+    background-color: #fff;
+  }
+}
+
+.el-dialog {
+  width: 85%;
+  border-radius: 10px;
+}
+
+.el-dialog__body {
+  font-size: 16px;
+}
+
+.el-dialog__header .el-dialog__close {
+  color: $color-second;
+}
+
+.language-select {
+  width: 100%;
+
+  .el-input__inner {
+    border-bottom: none;
+  }
+}
+
+.el-input__inner {
+  border: none;
+  //border-bottom: 1px solid #e6e6e6;
+  border-radius: 0;
+}
+
+.el-textarea__inner {
+  border: none;
+  border-bottom: 1px solid #e6e6e6;
+  border-radius: 0;
+}
+
+.el-input-group__append {
+  color: #333;
+  background-color: transparent;
+  border-radius: 0;
+  border: none;
+}
+
+.el-button--primary {
+  background: linear-gradient(90deg, $info-color 0%, $primary-color 100%);
+}
+
+.el-tabs__nav-wrap::after {
+  background: none !important;
+}
+
+.el-select-dropdown {
+  background: inherit !important;
+}
+
+.el-tabs__item {
+  font-size: 20px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  color: rgba(45, 45, 48, 1) !important;
+  line-height: 28px;
+}
+
+.el-tabs__item.is-active {
+  color: $primary-color !important;
+}
+
+.no-border {
+  .el-input__inner {
+    border: none;
+  }
+}
+
+.el-input {
+  font-size: 16px;
+
+  input {
+    background-color: $bg-shallow;
+  }
+}
+
+.no-bg {
+  input {
+    background-color: transparent;
+  }
+}
+
+.el-select {
+  font-size: 16px;
+  width: 100%;
+}
+
+.back-button {
+  width: 139px;
+  height: 56px;
+  color: $primary-color;
+  border: 1px solid $primary-color;
+}
+
+.finish {
+  width: 620px;
+}
+
+// 渐变按钮
+.gradual-button {
+  position: relative;
+  color: $primary-color;
+  padding: 13px 15px;
+  border: 1px solid;
+
+  &:active,
+  &:hover,
+  &:focus {
+    border-color: transparent;
+    background-color: #fff;
+  }
+
+  &:after {
+    position: absolute;
+    top: -1px;
+    bottom: -1px;
+    left: -1px;
+    right: -1px;
+    background: linear-gradient(to top, $warning-color, $primary-color);
+    content: ' ';
+    z-index: -1;
+    border-radius: 4px;
+  }
+}
+
+.simplert__icon {
+  width: 90px !important;
+  height: 80px !important;
+
+  img {
+    width: 90px !important;
+    height: 80px !important;
+  }
+}
+
+.simplert__content {
+  width: 85% !important;
+}
+
+.simplert__content--radius {
+  border-radius: 0.6em !important;
+}
+
+.small-from {
+  .el-form-item__label {
+    font-size: 12px;
+  }
+}
+
+.el-form-item__label {
+  padding-bottom: 5px !important
+}
+
+.el-message-box {
+  width: 80%;
+}
+
+.no-header-message {
+  .el-message-box__header {
+    padding-top: 15px !important;
+  }
+
+  .el-message-box__message {
+    text-align: justify;
+    color: $color-first;
+  }
+}
+
+.cancel-btn {
+  width: 45%;
+  height: 40px;
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  font-size: 16px;
+
+  &:hover {
+    border: 1px solid $primary-color;
+  }
+}
+
+.confirm-btn {
+  width: 45%;
+  height: 40px;
+  background-color: $primary-color;
+  font-size: 16px;
+}
+
+.signature-tabs {
+  .el-tabs__header {
+    margin: 0 0 5px;
+  }
+
+  .el-tabs__nav-wrap::after {
+    background-color: transparent;
+  }
+
+  .el-tabs__active-bar {
+    background-color: transparent;
+  }
+
+  .el-tabs__content {
+    background-color: $bg-shallow;
+  }
+}
+
+.dialog-footer {
+  position: relative;
+  z-index: 9;
+}
+
+.el-tabs__item.is-active {
+  color: #333;
+}
+
+.el-dialog__header {
+  background: url(https://jdi.cocosbcx.net/image/cocosbcx/pc.png) no-repeat !important;
+  height: 109px !important;
+}
+
+.el-dialog__close {
+  color: #fff !important;
+  font-size: 28px !important;
+}
+
+.el-dialog__body {
+  padding: 18px 25px 30px !important;
+}
+
+.el-dialog__title {
+  font-size: 22px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 1);
+  line-height: 50px;
+}
+
+.el-radio__label,
+.el-checkbox__label {
+  font-weight: 400;
+  line-height: 25px;
+  color: rgba(45, 45, 48, 1);
+}
+
+.el-form-item {
+  margin-bottom: 10px !important
+}
+
+.el-radio__input.is-checked+.el-radio__label {
+  font-weight: 500;
+  color: rgba(45, 45, 48, 1);
+  line-height: 25px;
+}
+
+.el-checkbox__input.is-checked+.el-checkbox__label {
+  font-weight: 500;
+  color: rgba(45, 45, 48, 1);
+  line-height: 25px;
+}
+
+.el-radio {
+  margin-right: 76px;
+}
+
+.el-button {
+  height: 56px;
+  font-size: 20px;
+}
+
+
+.el-input__inner {
+  background: rgba(241, 244, 247, 1) !important;
+  border-radius: 6px !important;
+  height: 45px;
+}
+
+.el-button--default {
+  border-image: linear-gradient(90deg, $info-color, $primary-color) 1 1;
+  color: $primary-color;
+  border-radius: 6px !important;
+  border: 1px solid;
+}

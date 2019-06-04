@@ -1,0 +1,148 @@
+.content {
+  display: flex;
+}
+
+.left {
+  min-width: 350px;
+  display: flex;
+  flex-direction: column;
+  height: 2000px;
+  border-right: 1px solid rgba(230, 233, 238, 1);
+  padding-top: 20px;
+
+
+  .search {
+    margin: 0 15px;
+    width: 320px;
+    height: 36px;
+    background: rgba(238, 240, 244, 1);
+    border-radius: 28px;
+    display: flex;
+    padding: 0 11px;
+    align-items: center;
+
+    input {
+      padding: 0 !important;
+      width: 200px;
+      margin-left: 6px;
+      font-size: 16px;
+      color: rgba(144, 148, 153, 1);
+    }
+  }
+
+  .total {
+    padding: 0 15px;
+    margin: 6px 0 22px 0;
+    font-size: 30px;
+    color: rgba(45, 45, 48, 1);
+    line-height: 34px;
+
+  }
+
+  p {
+    padding: 0 15px;
+    font-size: 16px;
+    color: rgba(144, 148, 153, 1);
+    line-height: 22px;
+    margin-top: 22px;
+  }
+
+  .coins {
+    padding: 0 15px;
+    width: 100%;
+    max-height: 88px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(230, 233, 238, 1);
+    color: rgba(45, 45, 48, 1);
+    line-height: 25px;
+    justify-content: space-between;
+    flex: 1;
+
+    &:first-child {
+      margin-top: 22px;
+      border-top: 1px solid rgba(230, 233, 238, 1);
+    }
+
+    .coin {
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 46px;
+        height: 46px;
+        border-radius: 100%;
+      }
+
+      .img {
+        width: 46px;
+        height: 46px;
+        border-radius: 100%;
+        background: #62d0fd;
+      }
+
+      span {
+        font-size: 18px;
+        font-weight: 500;
+        color: rgba(45, 45, 48, 1);
+        margin-left: 8px;
+      }
+    }
+
+    .num {
+      font-size: 22px;
+      font-family: Arial-BoldMT;
+      font-weight: normal;
+    }
+  }
+}
+
+.right {
+  position: relative;
+  height: 2000px;
+  width: 100%;
+  padding: 30px 24px;
+  background: rgba(246, 248, 252, 1);
+
+  p {
+    font-size: 22px;
+    font-weight: 500;
+    color: rgba(45, 45, 48, 1);
+    line-height: 30px;
+  }
+
+  .page {
+    width: 100%;
+    position: absolute;
+    display: flex;
+    top: 706px;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+
+    i {
+      margin: 0 10px;
+    }
+  }
+}
+
+.position {
+  position: absolute;
+  min-width: 110px !important;
+  height: 42px !important;
+
+  font-size: 18px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.refresh {
+  right: 150px;
+  top: 24px;
+}
+
+.transfer {
+  right: 24px;
+  top: 24px;
+}

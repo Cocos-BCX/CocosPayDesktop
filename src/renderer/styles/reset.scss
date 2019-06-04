@@ -1,0 +1,276 @@
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  list-style: none;
+  /* vertical-align:middle; */
+  box-sizing: border-box;
+  /* background:transparent; */
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', '微软雅黑', Arial, sans-serif, '\5b8b\4f53' !important;
+}
+
+/* @font-face {
+  font-family: 'Microsoft Yahei';
+  src: url('https://jdi.cocosbcx.net/fonts/Microsoft Yahei.ttf')
+      format('truetype'),
+    url('https://jdi.cocosbcx.net/fonts/Microsoft Yahei.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Microsoft Yahei';
+  src: url('https://jdi.cocosbcx.net/fonts/Microsoft Yahei.ttf')
+      format('truetype'),
+    url('https://jdi.cocosbcx.net/fonts/Microsoft Yahei.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+} */
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+body {
+  /* color:#fff; */
+  line-height: 1;
+  font-size: 14px;
+  min-width: 320px;
+  background: #fff;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+nav ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+
+a {
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-size: 100%;
+  text-decoration: none;
+  vertical-align: middle;
+  background: transparent;
+}
+
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* change colours to suit your needs */
+ins {
+  background-color: #ff9;
+  color: #000;
+  text-decoration: none;
+}
+
+/* change colours to suit your needs */
+mark {
+  background-color: #ff9;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+del {
+  text-decoration: line-through;
+}
+
+abbr[title],
+dfn[title] {
+  border-bottom: 1px dotted;
+  cursor: help;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* change border colour to suit your needs */
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cccccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+input,
+select {
+  width: 100%;
+  box-sizing: border-box;
+  vertical-align: middle;
+  background: inherit !important;
+}
+
+input,
+button {
+  display: block;
+  font-size: 15px;
+  line-height: 19px;
+  padding: 12px 10px;
+  border-radius: 6px;
+  background: inherit;
+  /* background:#33343b; */
+  -webkit-appearance: none;
+}
+
+ul {
+  background: inherit !important;
+}
+
+.clearfix {
+  *zoom: 1;
+}
+
+.clearfix:after {
+  display: block;
+  content: '\200B';
+  clear: both;
+  height: 0;
+}
+
+.float-left {
+  float: left !important;
+}
+
+.float-right {
+  float: right !important;
+}
+
+/* 修改input p */
+input:-moz-placeholder {
+  color: #999;
+}
+
+input::-moz-placeholder {
+  color: #999;
+}
+
+input:-ms-input-placeholder {
+  color: #999;
+}
+
+input::-webkit-input-placeholder {
+  color: #999;
+}
+
+
+input,
+textarea,
+select,
+button,
+a:focus {
+  outline: none;
+}
+
+.red {
+  color: rgba(255, 34, 34, 1);
+}

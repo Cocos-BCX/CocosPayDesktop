@@ -1,0 +1,13 @@
+@charset "utf-8";
+@import "variable";
+/* 改变主题色变量 */
+$--color-primary: $primary-color;
+$--color-info: $info-color;
+$--color-warning: $warning-color;
+$--color-success: $success-color;
+$--color-danger: $danger-color;
+
+/* 改变 icon 字体路径变量，必需 */
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+@import "~element-ui/packages/theme-chalk/src/index";

@@ -1,0 +1,217 @@
+@charset "utf-8";
+@import '../theme/v1/index';
+@import '../theme/v1/custom';
+@import '../theme/v1/variable';
+
+// 禁用文字选中
+* {
+  moz-user-select: -moz-none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// 修改placeholder颜色
+input::-webkit-input-placeholder {
+  color: $color-second;
+}
+
+input::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: $color-second;
+}
+
+input:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: $color-second;
+}
+
+input:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: $color-second;
+}
+
+body {
+  //width: 360px;
+  min-width: 360px;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden;
+  word-break: break-word;
+  color: $color-base;
+  font-size: 16px;
+  font-family: '微软雅黑';
+}
+
+
+.app-container {
+  position: relative;
+  padding: 0 15px;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+.small-tip {
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.small-tip-t {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.el-form-item__error {
+  display: none !important;
+}
+
+.flex {
+  display: flex;
+}
+
+.bg-gray {
+  background-color: #f9f9f9;
+}
+
+.block-center {
+  display: block;
+  margin: 0 auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.font22 {
+  font-weight: 500;
+  line-height: 22px
+}
+
+.mr40 {
+  margin-right: 40px !important;
+}
+
+.ml40 {
+  margin-left: 40px !important;
+}
+
+.pt20 {
+  padding-top: 20px;
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+
+.mt15 {
+  margin-top: 15px;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
+
+.mt30 {
+  margin-top: 30px;
+}
+
+.mt40 {
+  margin-top: 40px !important;
+}
+
+.mt45 {
+  margin-top: 45px;
+}
+
+.mt50 {
+  margin-top: 50px;
+}
+
+.mt60 {
+  margin-top: 60px;
+}
+
+.mt70 {
+  margin-top: 70px;
+}
+
+.mt80 {
+  margin-top: 80px;
+}
+
+.mt100 {
+  margin-top: 100px;
+}
+
+.mt110 {
+  margin-top: 115px;
+}
+
+.warm-tip {
+  font-size: 12px;
+  color: $danger-color;
+}
+
+.left-arrow {
+  display: inline-block;
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.left-arrow::after {
+  display: inline-block;
+  content: "";
+  height: 12px;
+  width: 12px;
+  border-width: 0 0 2px 2px;
+  border-color: #909499;
+  border-style: solid;
+  transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  margin-top: -7px;
+}
+
+.test-coin {
+  font-size: 14px;
+}
+
+.right-arrow {
+  display: inline-block;
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.right-arrow::after {
+  display: inline-block;
+  content: "";
+  height: 12px;
+  width: 12px;
+  border-width: 2px 2px 0 0;
+  border-color: #909499;
+  border-style: solid;
+  transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  margin-top: -7px;
+}

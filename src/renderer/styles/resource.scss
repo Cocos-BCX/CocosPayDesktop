@@ -1,0 +1,103 @@
+@charset "utf-8";
+@import "../theme/v1/variable";
+.resource-title{
+  font-size: 16px;
+  text-align: center;
+  color: $primary-color;
+  margin: 10px 0;
+}
+.resource-small-tip{
+  font-size: 12px;
+  color: $color-first;
+  line-height: 1.6;
+}
+.show-resource{
+  margin: 15px 0;
+}
+.show-vote{
+  border-top: 1px solid #e6e6e6;
+  .title{
+    font-size: 16px;
+    text-align: center;
+    color: $warning-color;
+    margin: 10px 0;
+  }
+  .vote{
+    width: 180px;
+    background-color: $bg-shallow;
+    padding: 20px 10px;
+    margin: 0 auto;
+    border-radius: 4px;
+    span{
+      display: block;
+      text-align: center;
+    }
+    .name{
+      font-size: 14px;
+      color: $color-second;
+    }
+    .value{
+      font-size: 24px;
+      color: $color-base;
+      margin-top: 10px;
+    }
+  }
+  .pledged{
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  .redeem-time{
+    font-size: 12px;
+    color: $color-second;
+    text-align: center;
+    margin-top: 10px;
+  }
+}
+.btn-group{
+  position: relative;
+  z-index: 9;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  button{
+    width: 45%;
+  }
+}
+.show-resource{
+  display: flex;
+  justify-content: space-between;
+  .item{
+    position: relative;
+    width: 46%;
+    background-color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px 5px;
+    &:after{
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      bottom: -2px;
+      right: -2px;
+      background: linear-gradient(to bottom, $warning-color, $primary-color);
+      content: ' ';
+      z-index: -1;
+      border-radius: 8px;
+    }
+    span{
+      display: block;
+    }
+    .name{ }
+    .value{
+      font-size: 14px;
+      color: $color-first;
+      margin-top: 5px;
+    }
+    .key{
+      margin-top: 5px;
+      font-size: 14px;
+      color: $color-second;
+    }
+  }
+}
