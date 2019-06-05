@@ -10,8 +10,8 @@
         <!-- <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span> -->
       </el-select>
     </section>
-    <el-button class="mt60" type="primary" @click="Add">{{$t('button.addNode')}}</el-button>
-    <el-button class="mt60" type="primary" @click="onSubmit">{{$t('button.sure')}}</el-button>
+    <el-button class="mt40" type="primary" @click="Add">{{$t('button.addNode')}}</el-button>
+    <el-button class="mt40" type="primary" @click="onSubmit">{{$t('button.sure')}}</el-button>
   </section>
   <section class="panel" v-else>
     <section class="base">

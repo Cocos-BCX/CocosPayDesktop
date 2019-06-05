@@ -28,7 +28,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="mt60" type="primary" @click="onSubmit('form')">{{$t('button.sure')}}</el-button>
+          <el-button class="mt20" type="primary" @click="onSubmit('form')">{{$t('button.sure')}}</el-button>
         </el-form-item>
       </el-form>
     </section>

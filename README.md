@@ -1,6 +1,6 @@
-## CocosPay:
+## CocosDesktop:
 
-CocosPay is a Desktop Application for Cocos-BCX.
+CocosDesktop is a Desktop Application for Cocos-BCX.
 
 ## Preparation:
 

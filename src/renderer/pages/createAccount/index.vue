@@ -163,7 +163,8 @@ export default {
       "settemporaryKeys",
       "setKeys",
       "setChangeRadio",
-      "setCocos"
+      "setCocos",
+      "loading"
     ]),
     ...mapMutations("common", [
       "WalletRegister",
@@ -192,32 +193,36 @@ export default {
             });
             this.loadBCXAccount().then(res => {
               if (res.code === 1) {
-                this.loginBCXAccount().then(result => {
-                  if (result.code === 1) {
-                    SocketService.initialize();
-                    this.WalletRegister(false);
-                    this.setAccount({
-                      account: this.formData.account,
-                      password: ""
-                    });
-                    if (!this.cocos) {
-                      const cocos = Cocos.placeholder();
-                      this.setCocos(cocos);
-                    } else if (!(this.cocos instanceof Cocos)) {
-                      let sfj = JSON.parse(JSON.stringify(this.cocos));
-                      const cocos = Cocos.fromJson(sfj);
-                      this.setCocos(cocos);
-                    }
-                    this.OutPutKey().then(key => {
-                      if (key.code === 1) {
-                        this.settemporaryKeys(key.data.active_private_keys);
-                        this.setKeys(key.data.owner_private_keys);
-                        this.privateStore(true);
-                        this.$router.push({ name: "home" });
+                this.loading(true);
+                setTimeout(() => {
+                  this.loading(false);
+                  this.loginBCXAccount().then(result => {
+                    if (result.code === 1) {
+                      SocketService.initialize();
+                      this.WalletRegister(false);
+                      this.setAccount({
+                        account: this.formData.account,
+                        password: ""
+                      });
+                      if (!this.cocos) {
+                        const cocos = Cocos.placeholder();
+                        this.setCocos(cocos);
+                      } else if (!(this.cocos instanceof Cocos)) {
+                        let sfj = JSON.parse(JSON.stringify(this.cocos));
+                        const cocos = Cocos.fromJson(sfj);
+                        this.setCocos(cocos);
                       }
-                    });
-                  }
-                });
+                      this.OutPutKey().then(key => {
+                        if (key.code === 1) {
+                          this.settemporaryKeys(key.data.active_private_keys);
+                          this.setKeys(key.data.owner_private_keys);
+                          this.privateStore(true);
+                          this.$router.push({ name: "home" });
+                        }
+                      });
+                    }
+                  });
+                }, 1000);
               }
             });
           } else {
@@ -255,6 +260,7 @@ export default {
         return;
       }
     }
+
     // changeLanguage() {
     //   this.setCurLng(this.lang);
     //   this.$i18n.locale = this.lang;

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <app-header/>
+    <app-header @refresh="refresh"/>
     <navigation/>
     <section class="tranfer-contain">
       <p>{{$t('button.transfer')}}</p>
@@ -17,13 +17,13 @@
           <el-form-item :label="$t('label.amount')" prop="amount">
             <el-input class="no-border" v-model="formData.amount" type="text"></el-input>
           </el-form-item>
-          <el-form-item :label="$t('label.coin')" prop="coin">
+          <el-form-item :label="$t('label.coin') + $t('title.test1')" prop="coin">
             <el-select v-model="coin" @change="changeCoin">
               <el-option
                 v-for="item in coins"
                 :key="item.coin"
-                :label="item.coin + $t('title.test')"
-                :value="item.coin + $t('title.test')"
+                :label="item.coin"
+                :value="item.coin"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -119,7 +119,7 @@ export default {
     };
     return {
       popup: false,
-      coin: "COCOS" + this.$t("title.test"),
+      coin: "COCOS",
       precision: 5,
       formData: {
         from: "",
@@ -155,23 +155,8 @@ export default {
       }
     }
   },
-  async mounted() {
-    this.formData.from = this.cocosAccount.accounts;
-    await this.UserAccount().then(res => {
-      if (res.code === 1) {
-        if (Array.isArray(res.data)) {
-          this.coins = res.data;
-        } else {
-          for (let [key, value] of Object.entries(res.data)) {
-            this.coins.push({
-              coin: key,
-              amount: value
-            });
-          }
-        }
-      }
-    });
-    this.changeCoin();
+  mounted() {
+    this.loading();
     // this.loadTokens()
   },
   methods: {
@@ -185,6 +170,28 @@ export default {
       await this.queryTranferRate({ feeAssetId: "COCOS" }).then(res => {
         this.fee = res.data.fee_amount.toFixed(this.precision);
       });
+    },
+    refresh() {
+      this.loading();
+    },
+    async loading() {
+      this.formData.from = this.cocosAccount.accounts;
+      await this.UserAccount().then(res => {
+        if (res.code === 1) {
+          if (Array.isArray(res.data)) {
+            this.coins = res.data;
+          } else {
+            this.coins = [];
+            for (let [key, value] of Object.entries(res.data)) {
+              this.coins.push({
+                coin: key,
+                amount: value
+              });
+            }
+          }
+        }
+      });
+      this.changeCoin();
     },
     onSubmit(formName) {
       this.$refs[formName].validate(valid => {

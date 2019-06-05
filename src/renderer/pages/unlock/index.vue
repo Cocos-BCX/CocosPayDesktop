@@ -23,6 +23,7 @@ import { mapState, mapMutations, mapActions } from "vuex";
 import SocketService from "@/services/socketService";
 import Cocos from "@/models/cocos";
 import utils from "../../utils/utils";
+import { fail } from "assert";
 export default {
   data() {
     return {
@@ -36,11 +37,20 @@ export default {
   computed: {
     ...mapState(["cocosAccount", "cocos", "accountType"])
   },
-  mounted() {},
+  mounted() {
+    this.init().then(res => {
+      this.AccountLogin(false);
+    });
+    this.AccountLogin(false);
+  },
   name: "unlock",
   methods: {
-    ...mapMutations(["setAccount", "setCocos"]),
+    ...mapActions(["init"]),
+    ...mapMutations(["setAccountType"]),
+    ...mapActions("wallet", ["getAccounts"]),
+    ...mapMutations(["setAccount", "setCocos", "setLoginNoAlert"]),
     ...mapActions("account", ["unlockAccount", "loginBCXAccount"]),
+    ...mapMutations("common", ["AccountLogin"]),
     unlockWallet() {
       if (!this.unlock) {
         this.$kalert({
@@ -54,12 +64,13 @@ export default {
       });
       if (this.accountType === "wallet") {
         this.unlockAccount().then(res => {
-          this.setAccount({
-            account: this.cocosAccount.accounts,
-            password: ""
-          });
-          SocketService.initialize();
           if (res.code === 1) {
+            this.setAccount({
+              account: this.cocosAccount.accounts,
+              password: ""
+            });
+            this.setLoginNoAlert(true);
+            SocketService.initialize();
             if (!this.cocos) {
               const cocos = Cocos.placeholder();
               this.setCocos(cocos);
@@ -69,28 +80,40 @@ export default {
               this.setCocos(cocos);
             }
             this.$router.push({ name: "home" });
+          } else {
+            this.accountLogin();
           }
         });
       } else {
-        this.loginBCXAccount().then(res => {
+        this.accountLogin();
+      }
+    },
+
+    accountLogin() {
+      this.loginBCXAccount().then(res => {
+        if (res.code === 1) {
           this.setAccount({
             account: this.cocosAccount.accounts,
             password: ""
           });
           SocketService.initialize();
-          if (res.code === 1) {
-            if (!this.cocos) {
-              const cocos = Cocos.placeholder();
-              this.setCocos(cocos);
-            } else if (!(this.cocos instanceof Cocos)) {
-              let sfj = JSON.parse(JSON.stringify(this.cocos));
-              const cocos = Cocos.fromJson(sfj);
-              this.setCocos(cocos);
-            }
-            this.$router.push({ name: "home" });
+          if (!this.cocos) {
+            const cocos = Cocos.placeholder();
+            this.setCocos(cocos);
+          } else if (!(this.cocos instanceof Cocos)) {
+            let sfj = JSON.parse(JSON.stringify(this.cocos));
+            const cocos = Cocos.fromJson(sfj);
+            this.setCocos(cocos);
           }
-        });
-      }
+          this.$router.push({ name: "home" });
+        } else {
+          this.init().then(res => {
+            this.getAccounts().then(account => {
+              this.setAccountType(account.current_account.mode);
+            });
+          });
+        }
+      });
     }
   },
   destroyed() {

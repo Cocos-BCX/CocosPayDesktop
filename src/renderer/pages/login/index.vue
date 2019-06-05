@@ -4,9 +4,9 @@
     <section class="radio-groups">
       <el-radio-group v-model="radio" @change="changeType()">
         <el-radio :label="'wallet'">{{$t('title.walletType')}}</el-radio>
-        <el-radio v-if="accountType !== 'wallet'" :label="'account'">{{$t('title.accountType')}}</el-radio>
+        <el-radio v-if="!accountAdd" :label="'account'">{{$t('title.accountType')}}</el-radio>
         <el-radio
-          v-if="accountType !== 'wallet'"
+          v-if="!accountAdd"
           :label="'file'"
         >{{$t('label.keyFile')}}({{$t('title.walletType')}})</el-radio>
       </el-radio-group>
@@ -45,7 +45,7 @@
         v-model="remember"
         @change="rememberCount"
       >{{$t('label.remember')}}</el-checkbox>
-      <el-form-item class="mt60">
+      <el-form-item class="mt40">
         <el-button
           class="full-btn"
           type="primary"
@@ -200,7 +200,8 @@ export default {
       "LoginCountStore",
       "cocos",
       "accountType",
-      "changeRadio"
+      "changeRadio",
+      "accountAdd"
     ])
   },
   mounted() {
@@ -212,6 +213,7 @@ export default {
   },
   destroyed() {
     this.setKeys("");
+    this.setAccountAdd(false);
   },
   methods: {
     ...mapActions("wallet", ["deleteWallet"]),
@@ -226,7 +228,8 @@ export default {
       "setIsImportKeys",
       "setSha",
       "setChangeRadio",
-      "setLogin"
+      "setLogin",
+      "setAccountAdd"
     ]),
     ...mapActions("account", [
       "loadBCXAccount",
@@ -266,7 +269,6 @@ export default {
       if (this.file) {
         this.LoadWalletFile({ file: this.file }).then(res => {
           if (res.code === 1) {
-            this.AccountLogin(false);
             this.setSha(res.data.sha1);
             this.setAccount({
               account: "",
@@ -280,6 +282,7 @@ export default {
                 });
                 this.unlockAccount().then(unlock => {
                   if (unlock.code === 1) {
+                    this.AccountLogin(false);
                     this.setLogin(true);
                     this.setAccount({
                       account: result.data.account_name,

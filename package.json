@@ -1,5 +1,5 @@
 {
-  "name": "CocosPay",
+  "name": "CocosDesktop",
   "version": "1.0.0",
   "author": "Cocos-BCX",
   "description": "An electron-vue project",
@@ -22,7 +22,7 @@
     "postinstall": "npm run lint:fix"
   },
   "build": {
-    "productName": "CocosPay",
+    "productName": "CocosDesktop",
     "appId": "www.cocosbcx.io",
     "directories": {
       "output": "build"
@@ -57,7 +57,7 @@
       "oneClick": false,
       "createDesktopShortcut": "always",
       "createStartMenuShortcut": true,
-      "shortcutName": "CocosPay"
+      "shortcutName": "CocosDesktop"
     },
     "linux": {
       "icon": "build/icons"

@@ -78,7 +78,7 @@ export default {
   margin: 10px 0;
 }
 .des-center {
-  margin-top: 122px;
+  margin-top: 110px;
   width: 100%;
   text-align: center;
   font-size: 26px;
@@ -98,6 +98,6 @@ button {
   font-size: 20px;
   font-family: PingFangSC-Medium;
   font-weight: 500;
-  margin: 15% 5% 0;
+  margin: 10% 5% 0;
 }
 </style>

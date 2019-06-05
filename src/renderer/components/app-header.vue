@@ -16,7 +16,7 @@
           <span :class="item === cocosAccount ? 'active' : ''">{{item}}</span>
           <div class="check" v-if="item === cocosAccount"></div>
         </div>
-        <div class="add" @click="AccountLogin(true)">+ {{$t('label.newAccout')}}</div>
+        <div class="add" @click="addAccounts">+ {{$t('label.newAccout')}}</div>
       </section>
       <img class="mr40 cursor" src="../assets/img/lock.png" v-if="isLocked" @click="lockCount" alt>
       <img class="mr40 cursor" src="../assets/img/unlock.png" v-else @click="lockCount" alt>
@@ -71,9 +71,17 @@ export default {
       }
     }
   },
+
   methods: {
     ...mapMutations("common", ["AccountLogin"]),
-    ...mapMutations(["setAccount", "setIsLocked", "setCocos", "setAccount"]),
+    ...mapMutations([
+      "setAccount",
+      "setIsLocked",
+      "setCocos",
+      "setAccount",
+      "setAccountType",
+      "setAccountAdd"
+    ]),
     ...mapActions("wallet", ["getAccounts", "setCurrentAccount"]),
     ...mapActions(["lockCount"]),
     ...mapActions("account", ["loadingBCXAccount"]),
@@ -81,9 +89,16 @@ export default {
       setTimeout(() => {
         this.getAccounts().then(res => {
           this.list = res.accounts;
+          this.setAccountType(res.current_account.mode);
         });
       }, 1000);
     },
+
+    addAccounts() {
+      this.AccountLogin(true);
+      this.setAccountAdd(true);
+    },
+
     listShow() {
       this.accountType === "wallet"
         ? (this.selectAccount = !this.selectAccount)

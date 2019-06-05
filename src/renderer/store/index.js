@@ -70,6 +70,8 @@ export default new Vuex.Store({
     dialog: '',
     whiteList: [],
     contractWhiteList: [],
+    loginNoAlert: false,
+    accountAdd: false
   },
   mutations: {
     setCocos(state, cocos) {
@@ -83,6 +85,12 @@ export default new Vuex.Store({
     },
     setDialogs(state, dialog) {
       state.dialog = dialog
+    },
+    setAccountAdd(state, accountAdd) {
+      state.accountAdd = accountAdd
+    },
+    setLoginNoAlert(state, loginNoAlert) {
+      state.loginNoAlert = loginNoAlert
     },
     setChangeRadio(state, changeRadio) {
       state.changeRadio = changeRadio
@@ -186,6 +194,22 @@ export default new Vuex.Store({
           commit('setIsLocked', true)
           router.replace({
             name: 'unlock'
+          })
+        })
+      } catch (e) {
+        return e
+      }
+    },
+    async init({
+      commit
+    }) {
+      try {
+        commit('loading', true, {
+          root: true
+        })
+        await NewBCX.init().then((res) => {
+          commit('loading', false, {
+            root: true
           })
         })
       } catch (e) {

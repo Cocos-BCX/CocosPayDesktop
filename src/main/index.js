@@ -1,19 +1,11 @@
-'use strict'
-
 import {
   app,
   Menu,
-  BrowserWindow,
-  ipcMain
+  BrowserWindow
 } from 'electron'
-import installExtension, {
-  REACT_DEVELOPER_TOOLS
-} from 'electron-devtools-installer'
 global.appShared = {
   ApiWatcher: null
 }
-
-installExtension(REACT_DEVELOPER_TOOLS.id)
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -33,9 +25,6 @@ const callDeepLink = url => {
   }
 }
 
-ipcMain.on('language', (event, arg) => {
-  console.log(arg) // prints "ping"
-})
 
 function createWindow() {
   /**
@@ -52,7 +41,7 @@ function createWindow() {
   mainWindow.loadURL(winURL)
   // if (process.env.NODE_ENV !== 'development') {
   const template = [{
-      label: 'COCOSPAY',
+      label: 'CocosDesktop',
       submenu: [{
         label: 'About Us',
         click() {
@@ -99,7 +88,9 @@ function createWindow() {
           label: 'Quit',
           accelerator: 'CmdOrCtrl+Q',
           click() {
+            // if (process.platform !== 'darwin') {
             app.quit()
+            // }
           }
         }
       ]
@@ -120,27 +111,27 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
-  mainWindow.webContents.session.on('will-download', (event, item, webContents) => {
-    // Set the save path, making Electron not to prompt a save dialog.
-    item.on('updated', (event, state) => {
-      if (state === 'interrupted') {
-        console.log('Download is interrupted but can be resumed')
-      } else if (state === 'progressing') {
-        if (item.isPaused()) {
-          console.log('Download is paused')
-        } else {
-          console.log(`Received bytes: ${item.getReceivedBytes()}`)
-        }
-      }
-    })
-    item.once('done', (event, state) => {
-      if (state === 'completed') {
-        console.log('Download successfully')
-      } else {
-        console.log(`Download failed: ${state}`)
-      }
-    })
-  })
+  // mainWindow.webContents.session.on('will-download', (event, item, webContents) => {
+  //   // Set the save path, making Electron not to prompt a save dialog.
+  //   item.on('updated', (event, state) => {
+  //     if (state === 'interrupted') {
+  //       console.log('Download is interrupted but can be resumed')
+  //     } else if (state === 'progressing') {
+  //       if (item.isPaused()) {
+  //         console.log('Download is paused')
+  //       } else {
+  //         console.log(`Received bytes: ${item.getReceivedBytes()}`)
+  //       }
+  //     }
+  //   })
+  //   item.once('done', (event, state) => {
+  //     if (state === 'completed') {
+  //       console.log('Download successfully')
+  //     } else {
+  //       console.log(`Download failed: ${state}`)
+  //     }
+  //   })
+  // })
 }
 
 app.on('ready', createWindow)
@@ -150,7 +141,6 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
-ipcMain.on('closes', e => mainWindow.close())
 
 app.on('activate', () => {
   if (mainWindow === null) {

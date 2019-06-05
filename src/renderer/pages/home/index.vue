@@ -34,7 +34,7 @@
         >{{$t('button.transfer')}}</el-button>
         <p>{{$t('title.history')}}</p>
         <action :tranfers="tranfers"/>
-        <section class="page">
+        <!-- <section class="page">
           <el-pagination
             @prev-click="prevPage"
             @next-click="nextPage"
@@ -43,7 +43,7 @@
             :total="total"
             :page-size="1"
           ></el-pagination>
-        </section>
+        </section>-->
       </section>
     </div>
   </section>
@@ -122,11 +122,11 @@ export default {
     handleCurrentChange(e) {
       this.tranfers = this.totalTx[e - 1];
     },
+
     loadData() {
       this.totalTx = [];
       this.total = 1;
       this.loadingBCXAccount().then(res => {
-        this.setAccountType(res.mode);
         if (res && res.locked) {
           if (this.cocosAccount.accounts) {
             this.setIsLocked(true);
@@ -189,29 +189,33 @@ export default {
         endId: "1.11.0"
       });
       this.queryTranferList().then(res => {
-        if (res.length < 10) {
-          this.tranfers = res;
-          return;
-        }
-        let j = 0;
-        let list = [];
-        this.totalTx = [];
-        this.tranfers = [];
-        for (let i = 0; i < res.length; i++) {
-          if (j < 10) {
-            j++;
-            list.push(res[i]);
-            if (i === res.length - 1) {
-              this.totalTx.push(list);
-            }
-          } else {
-            j = 0;
-            this.totalTx.push(list);
-            list = [];
-          }
-        }
-        this.total = this.totalTx.length;
-        this.tranfers = this.totalTx[0];
+        this.tranfers = res;
+        return;
+        // if (res.length < 10) {
+        // }
+        // let j = 0;
+        // let list = [];
+        // this.totalTx = [];
+        // this.tranfers = [];
+        // for (let i = 0; i < res.length; i++) {
+        //   if (j < 10) {
+        //     j++;
+        //     list.push(res[i]);
+        //     console.log(res.length - 1);
+        //     console.log(i);
+
+        //     if (res.length - 2 === i) {
+        //       this.totalTx.push(list);
+        //     }
+        //   } else {
+        //     j = 0;
+        //     this.totalTx.push(list);
+        //     list = [];
+        //   }
+        // }
+
+        // this.total = this.totalTx.length;
+        // this.tranfers = this.totalTx[0];
       });
     },
     closedAccountDialog() {
