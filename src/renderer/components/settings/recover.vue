@@ -85,14 +85,14 @@ export default {
         });
       } else {
         this.$kalert({
-          message: "Upload Key File(.bin)"
+          message: CommonJs.getI18nMessages(I18n).label.uploadKeyFile
         });
       }
     },
     StoreAccount(formName) {
       if (!this.file) {
         this.$kalert({
-          message: "Upload Key File(.bin)"
+          message: CommonJs.getI18nMessages(I18n).label.uploadKeyFile
         });
         return;
       }

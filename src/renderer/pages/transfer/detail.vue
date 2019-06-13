@@ -15,7 +15,7 @@
           <section class="message">
             <div class="item">
               <span>{{$t('label.send')}}：</span>
-              <span>{{orderDeatil.parse_operations.from}}</span>
+              <span class="name">{{orderDeatil.parse_operations.from}}</span>
             </div>
             <div class="item">
               <span>{{$t('label.cost')}}：</span>
@@ -26,7 +26,7 @@
             </div>
             <div class="item">
               <span>{{$t('label.toAddress')}}：</span>
-              <span>{{orderDeatil.parse_operations.to}}</span>
+              <span class="name">{{orderDeatil.parse_operations.to}}</span>
             </div>
             <div class="item">
               <span>{{$t('label.tradeTime')}}：</span>
@@ -36,8 +36,14 @@
               <span>{{$t('label.amount')}}：</span>
               <span>
                 {{orderDeatil.parse_operations.amount}}
-                <span class="test-coin">({{$t('title.test')}})</span>
+                <span
+                  class="test-coin"
+                >({{$t('title.test')}})</span>
               </span>
+            </div>
+            <div class="memo" v-if="memo">
+              <div class="key">{{$t('label.memo')}}:</div>
+              <div class="name">{{orderDeatil.memo.data.text}}</div>
             </div>
           </section>
         </section>
@@ -49,11 +55,13 @@
 import AppHeader from "@/components/app-header";
 import Navigation from "@/components/navigation";
 import { mapState, mapMutations, mapActions } from "vuex";
-
+import { GetBCXWithState } from "../../utils/bcx";
+let NewBCX = GetBCXWithState();
 export default {
   data() {
     return {
-      orderDeatil: {}
+      orderDeatil: {},
+      memo: false
     };
   },
   components: {
@@ -63,11 +71,17 @@ export default {
   computed: {
     ...mapState(["cocosAccount"])
   },
-  mounted() {
+  async mounted() {
     if (!this.$route.params.id) {
       this.$router.go(-1);
     }
     this.orderDeatil = this.$route.params;
+    this.orderDeatil.memo = this.orderDeatil.raw_data.memo
+      ? await NewBCX.decodeMemo(this.orderDeatil.raw_data.memo)
+      : "";
+    if (this.orderDeatil.memo) {
+      this.memo = true;
+    }
   },
   name: "transferInfo",
   methods: {}
@@ -84,7 +98,7 @@ export default {
   }
   .content {
     width: 100%;
-    height: 311px;
+    height: 340;
     background: rgba(58, 123, 255, 0.0808);
     border-radius: 6px;
     margin-top: 30px;
@@ -114,12 +128,35 @@ export default {
         display: flex;
         flex-wrap: wrap;
         margin-top: 28px;
+        .memo {
+          margin-top: 12px;
+          font-size: 16px;
+          color: rgba(144, 148, 153, 1);
+          line-height: 22px;
+          display: flex;
+          .key {
+            min-width: 48px;
+          }
+          .name {
+            margin-left: 8px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 5;
+          }
+        }
         .item {
           margin-top: 12px;
           width: 40%;
           font-size: 16px;
           color: rgba(144, 148, 153, 1);
           line-height: 22px;
+          .name {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 130px;
+          }
           span:nth-of-type(1) {
             min-width: 80px;
           }

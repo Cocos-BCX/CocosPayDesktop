@@ -222,15 +222,17 @@ export default {
         root: true
       })
       try {
+        var resData
         setTimeout(() => {
           commit('loading', false, {
             root: true
           })
-          // Alert({
-          //   message: CommonJs.getI18nMessages(I18n).error[150]
-          // })
+          if (!resData) {
+            Alert({
+              message: CommonJs.getI18nMessages(I18n).error[109]
+            })
+          }
         }, 10000)
-        let resData
         await NewBCX.importPrivateKey({
           privateKey: rootState.privateKeys,
           password: rootState.cocosAccount.passwords
@@ -251,6 +253,15 @@ export default {
               })
             }
           } else {
+            if (rootState.accountAdd && res.code !== 160) {
+              Alert({
+                message: CommonJs.getI18nMessages(I18n).verify.walletPassword
+              })
+              resData = {
+                code: 150
+              }
+              return resData
+            }
             if (res.code !== 107) {
               Alert({
                 message: CommonJs.getI18nMessages(I18n).error[

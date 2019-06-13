@@ -98,7 +98,7 @@ export default {
   },
   // verify
   verify: {
-    accountType: '4-63位小写字母开头+数字',
+    accountType: '5-63位小写字母开头+数字',
     passwordType: '8-12位数字、字母和特殊符号任两种',
     keysNull: '私钥不能为空',
     passwordNull: '密码不能为空',
@@ -116,6 +116,8 @@ export default {
     numberGtZero: '请输入大于0的数字',
     max: '超出上限',
     noZero: '数量应该大于 0',
+    ownerKey: 'owner_key不能进行转账，请导入active_key',
+    walletPassword: '请输入最初的临时密码',
   },
   // title
   title: {
@@ -179,7 +181,7 @@ export default {
   },
   // label
   label: {
-    trasfer: '转账成功',
+    trasfer: '转账详情',
     assert: '我的资产',
     password: '密码',
     type: '注册模式',

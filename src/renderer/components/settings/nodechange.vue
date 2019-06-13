@@ -3,7 +3,7 @@
     <section class="base">
       <span>{{$t('label.nodeSelect')}}</span>
       <el-select class="language-select" v-model="choose">
-        <el-option v-for="(item, index) in nodes" :key="index" :label="item.ws" :value="index">
+        <el-option v-for="(item, index) in nodes" :key="index" :label="item.name" :value="index">
           <!-- <span>{{ item.ws }}</span>
           <span style="float: right; color: #8492a6; font-size: 13px">{{ item.name }}</span>-->
         </el-option>
@@ -144,7 +144,7 @@ export default {
     this.nodes = Storage.get("node").concat(
       Storage.get("add_node") ? Storage.get("add_node") : []
     );
-    this.choose = Storage.get("choose_node").ws;
+    this.choose = Storage.get("choose_node").name;
   }
 };
 </script>

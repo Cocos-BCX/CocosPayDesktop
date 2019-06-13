@@ -97,7 +97,7 @@ export default {
   },
   // verify
   verify: {
-    accountType: '4-63-bit lowercase letter beginning + number',
+    accountType: '5-63-bit lowercase letter beginning + number',
     passwordType: '8-12 digits, letters and special symbols',
     keysNull: 'The private key cannot be empty',
     passwordNull: 'The password cannot be empty',
@@ -115,6 +115,8 @@ export default {
     numberGtZero: 'Please enter a number greater than 0',
     max: 'Beyond the limit',
     noZero: 'The quantity should be greater than 0',
+    ownerKey: 'Owner key cannot transfer,Please import active key',
+    walletPassword: 'Please enter the original temporary password',
   },
   // title
   title: {

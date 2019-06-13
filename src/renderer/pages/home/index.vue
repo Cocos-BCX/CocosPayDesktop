@@ -11,8 +11,8 @@
         <div class="total">¥0.00</div>
         <section class="coins" v-for="(item,index) in accountList" :key="index">
           <section class="coin">
-            <img v-if="item[0] === 'COCOS'" src="../../assets/img/cocos2.png" alt>
-            <div class="img" v-else></div>
+            <img src="../../assets/img/cocos2.png" alt>
+            <!-- <div class="img" v-else></div> -->
             <span>
               {{item[0]}}
               <span class="test-coin">({{$t('title.test')}})</span>
@@ -184,7 +184,7 @@ export default {
     },
     transferList() {
       this.setTranferList({
-        limit: 100,
+        limit: 50,
         startId: "1.11.0",
         endId: "1.11.0"
       });

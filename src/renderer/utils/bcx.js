@@ -89,6 +89,9 @@ function GetNewBCX() {
     worker: false
   })
   Storage.set('choose_node', Node)
+  NewBCX.lookupWSNodeList({
+    refresh: true
+  }).then(res => {})
   return NewBCX
 }
 

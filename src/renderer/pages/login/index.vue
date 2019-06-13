@@ -16,6 +16,7 @@
       :model="formData"
       :rules="formRules"
       class="mt40"
+      :validate-on-rule-change="false"
       v-if="radio === 'account'"
     >
       <el-form-item prop="account">
@@ -57,6 +58,7 @@
       ref="formwallet"
       :model="formDataWallet"
       :rules="WalletRules"
+      :validate-on-rule-change="false"
       class="mt40"
       v-if="radio === 'wallet'"
     >
@@ -78,11 +80,11 @@
           v-model="formDataWallet.password"
           @focus="setChangeRadio(false)"
           type="password"
-          :placeholder="$t('verify.passwordType')"
+          :placeholder="$t('placeholder.temporary')"
         ></el-input>
         <input type="text" value style="display: none;">
       </el-form-item>
-      <el-form-item class="mt110">
+      <el-form-item class="mt80">
         <el-button
           class="full-btn"
           type="primary"
@@ -104,11 +106,11 @@
           class="no-border"
           v-model="keyfile_password"
           type="password"
-          :placeholder="$t('verify.passwordType')"
+          :placeholder="$t('placeholder.temporary')"
         ></el-input>
       </el-form-item>
-      <el-form-item>
-        <el-button class="full-btn file" type="primary" @click="fileLogin">{{$t('title.login')}}</el-button>
+      <el-form-item class="full-btn file">
+        <el-button class="full-btn" type="primary" @click="fileLogin">{{$t('title.login')}}</el-button>
       </el-form-item>
     </el-form>
   </section>
@@ -437,28 +439,28 @@ export default {
 }
 
 .keyfile {
-  height: 390px;
+  // height: 360px;
   position: relative;
 }
 
 .box {
   width: 620px;
-  height: 56px;
+  height: 45px;
   background: rgba(241, 244, 247, 1);
   border-radius: 6px;
   margin-top: 14px;
   position: relative;
   div {
-    font-size: 18px;
-    color: rgba(144, 148, 153, 1);
+    font-size: 16px;
+    color: #606266;
     position: absolute;
-    top: 10px;
+    top: 4px;
     left: 15px;
   }
   input.file {
     position: absolute;
     right: 15px;
-    top: 13px;
+    top: 10px;
     opacity: 0;
     height: 30px;
     width: 30px;
@@ -474,11 +476,11 @@ export default {
   }
 }
 
-.remember {
-  margin: 4px 0;
-}
+// .remember {
+//   margin: 4px 0;
+// }
 
 .full-btn.file {
-  margin-top: 141px;
+  margin-top: 112px;
 }
 </style>

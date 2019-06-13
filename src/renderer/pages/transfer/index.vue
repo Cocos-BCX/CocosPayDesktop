@@ -101,7 +101,10 @@ export default {
           message: this.$i18n.t("verify.number")
         });
         callback(new Error());
-      } else if (!/^(-?\d+)(\.\d{1,5})?$/.test(value)) {
+      } else if (
+        value.toString().split(".")[1] &&
+        value.toString().split(".")[1].length > this.precision
+      ) {
         this.$kalert({
           message: this.$i18n.t("verify.minimum") + this.precision
         });
@@ -141,7 +144,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["cocosAccount", "cocosCount"]),
+    ...mapState(["cocosAccount", "cocosCount", "accountType"]),
     ...mapState("wallet", ["accounts"]),
     ...mapState("trans", ["tranferInfo"]),
     payName() {
@@ -157,14 +160,21 @@ export default {
   },
   mounted() {
     this.loading();
+    if (this.accountType === "wallet") {
+      this.OutPutKey().then(key => {
+        if (key.data.owner_private_keys && key.data.owner_private_keys.length) {
+          this.owner = true;
+        }
+      });
+    }
     // this.loadTokens()
   },
   methods: {
     ...mapMutations("trans", ["setAccount"]),
     ...mapActions("trans", ["tranferBCX", "queryTranferRate", "queryAsset"]),
-    ...mapActions("account", ["UserAccount"]),
+    ...mapActions("account", ["UserAccount", "OutPutKey"]),
     async changeCoin() {
-      await this.queryAsset({ assetId: "COCOS" }).then(res => {
+      await this.queryAsset({ assetId: this.coin }).then(res => {
         this.precision = res.precision;
       });
       await this.queryTranferRate({ feeAssetId: "COCOS" }).then(res => {
@@ -197,11 +207,22 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.queryTranferRate({ feeAssetId: this.coin }).then(res => {
-            if (
-              res.data.fee_amount + Number(this.formData.amount) <
-                this.cocosCount ||
+            if (this.owner) {
+              this.$kalert({
+                message: this.$i18n.t("verify.ownerKey")
+              });
+              return;
+            } else if (
+              (this.coin === "COCOS" &&
+                res.data.fee_amount + Number(this.formData.amount) <
+                  this.cocosCount) ||
               res.data.fee_amount + Number(this.formData.amount) ===
                 this.cocosCount
+            ) {
+              this.popup = true;
+            } else if (
+              this.coin !== "COCOS" &&
+              res.data.fee_amount < this.cocosCount
             ) {
               this.popup = true;
             } else {
