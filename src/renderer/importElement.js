@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import {
+  // import { Icon } from 'vue-awesome/components/Icon';
   Button,
   Form,
   FormItem,
@@ -14,7 +15,8 @@ import {
   Radio,
   RadioGroup,
   Pagination,
-  Upload
+  Upload,
+  Icon
 } from 'element-ui'
 Vue.use(Radio)
 Vue.use(RadioGroup)
@@ -22,6 +24,7 @@ Vue.use(Button)
 Vue.use(Form)
 Vue.use(Button)
 Vue.use(Form)
+Vue.use(Icon)
 Vue.use(FormItem)
 Vue.use(Input)
 Vue.use(Checkbox)

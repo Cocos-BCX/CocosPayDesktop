@@ -13,8 +13,9 @@
           @click="chooseAccount(item,index)"
           :key="index"
         >
-          <span :class="item === cocosAccount ? 'active' : ''">{{item}}</span>
-          <div class="check" v-if="item === cocosAccount"></div>
+          <span :class="item === cocosAccount.accounts ? 'active' : ''">{{item}}</span>
+          <!-- <div class="check" ></div> -->
+          <i v-if="item === cocosAccount.accounts" class="el-icon-check"></i>
         </div>
         <div class="add" @click="addAccounts">+ {{$t('label.newAccout')}}</div>
       </section>
@@ -86,17 +87,18 @@ export default {
     ...mapActions(["lockCount"]),
     ...mapActions("account", ["loadingBCXAccount"]),
     loadAccounts() {
-      setTimeout(() => {
-        this.getAccounts().then(res => {
-          this.list = res.accounts;
-          this.setAccountType(res.current_account.mode);
-        });
-      }, 1000);
+      // setTimeout(() => {
+      this.getAccounts().then(res => {
+        this.list = res.accounts;
+        this.setAccountType(res.current_account.mode);
+      });
+      // }, 1000);
     },
 
     addAccounts() {
       this.AccountLogin(true);
       this.setAccountAdd(true);
+      this.selectAccount = false;
     },
 
     listShow() {
@@ -163,12 +165,17 @@ header {
       height: 71px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       margin: 0 24px;
       border-top: 1px solid rgba(230, 233, 238, 1);
       span {
         font-size: 20px;
         color: rgba(144, 148, 153, 1);
         line-height: 28px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 200px;
         &.active {
           color: rgba(26, 29, 38, 1);
         }
@@ -188,10 +195,15 @@ header {
   .check {
     width: 8px;
     height: 16px;
+    border-width: 0 3px 5px 0;
     border-color: #3a7bff;
     border-style: solid;
     background: #3a7bff;
     transform: rotate(45deg);
+  }
+  .el-icon-check {
+    color: #3a7bff;
+    font-size: 30px;
   }
 }
 </style>

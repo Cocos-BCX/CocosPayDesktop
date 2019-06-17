@@ -10,6 +10,7 @@ export default {
     privateKey: 'Enter private key',
     input: 'Enter',
     noBlank: "Can't be empty",
+    filePassword: 'The password to create the file',
   },
   // button
   button: {
@@ -70,7 +71,7 @@ export default {
     walletPassword: 'This password is the wallet password when backing up the wallet file.',
     accountActive: 'Active permissions are used to set the name or public key of an account that has permission to spend money on this account.',
     accountOwner: 'Account permissions set who can control this account, the controller (account name or public key) can modify various settings related to the account, including permission settings',
-    bin: 'Clicking the button below will generate a backup file with an extension of. bin, encrypted with your wallet password and containing all the private keys of your account, which can be used to restore your wallet or move it to a different computer/browser.',
+    bin: 'Clicking the button below will generate a backup file with an extension of. bin, encrypted with your current temporary password and containing all the private keys of your account, which can be used to restore your wallet or move it to a different computer/browser, Changing the temporary password does not change the password for this file.',
     rememberPassword: 'Please remember the password, forget the password will not be recovered',
     recommendNew: 'Recommend new users for use',
     recommendOld: 'Recommend to users who already have COCOS accounts',

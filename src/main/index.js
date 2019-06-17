@@ -35,7 +35,8 @@ function createWindow() {
     useContentSize: true,
     width: 1200,
     minWidth: 1000,
-    minHeight: 800
+    minHeight: 800,
+    show: false // 先隐藏
   })
 
   mainWindow.loadURL(winURL)
@@ -107,7 +108,9 @@ function createWindow() {
   //     mainWindow.webContents.openDevTools()
   //   })
   // }
-
+  mainWindow.on('ready-to-show', function () {
+    mainWindow.show() // 初始化后再显示
+  })
   mainWindow.on('closed', () => {
     mainWindow = null
   })

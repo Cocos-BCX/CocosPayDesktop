@@ -52,6 +52,7 @@
 import { mapState, mapMutations, mapActions } from "vuex";
 import BCX from "bcxjs-api";
 import Storage from "../../utils/storage";
+import utils from "../../utils/utils";
 import { GetBCXWithState } from "../../utils/bcx";
 export default {
   name: "baseSetting",
@@ -73,6 +74,7 @@ export default {
   methods: {
     ...mapActions("account", ["logoutBCXAccount"]),
     ...mapActions("wallet", ["deleteWallet"]),
+    ...mapActions(["apiConfig"]),
     onSubmit() {
       let NewBCX = GetBCXWithState();
       if (
@@ -90,13 +92,13 @@ export default {
         });
       } else {
         let Node = this.nodes[this.choose];
-        this.init(Node);
+        utils.init(Node);
         NewBCX.init({ refresh: true }).then(res => {
           if (res.code !== 1) {
             this.$kalert({
               message: this.$i18n.t(`error[${res.code}]`)
             });
-            this.init(this.nodes[0]);
+            utils.init(this.nodes[0]);
             NewBCX.init({ refresh: true }).then(res => {
               NewBCX.switchAPINode({
                 url: this.nodes[0].ws
@@ -109,27 +111,18 @@ export default {
     Add() {
       this.add = !this.add;
     },
-    init(Node) {
-      let NewBCX = new BCX({
-        default_ws_node: Node.ws,
-        ws_node_list: [
-          {
-            url: Node.ws,
-            name: Node.name
-          }
-        ],
-        networks: [
-          {
-            core_asset: "COCOS",
-            chain_id: Node.chainId
-          }
-        ],
-        faucet_url: Node.url,
-        auto_reconnect: false,
-        worker: false
-      });
-    },
     AddNode() {
+      if (
+        !this.formData.ws ||
+        !this.formData.url ||
+        !this.formData.chainId ||
+        !this.formData.name
+      ) {
+        this.$kalert({
+          message: this.$i18n.t("error[101]")
+        });
+        return;
+      }
       this.formData.type = 2;
       let add_node = Storage.get("add_node") ? Storage.get("add_node") : [];
       add_node.push(this.formData);
@@ -144,7 +137,10 @@ export default {
     this.nodes = Storage.get("node").concat(
       Storage.get("add_node") ? Storage.get("add_node") : []
     );
-    this.choose = Storage.get("choose_node").name;
+    let choose = Storage.get("choose_node");
+    choose.connect = false;
+    this.apiConfig(choose);
+    this.choose = choose.name;
   }
 };
 </script>

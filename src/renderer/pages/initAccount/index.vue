@@ -12,6 +12,7 @@
 <script>
 import LogoHeader from "../../components/logo-header";
 import { mapState, mapMutations, mapActions } from "vuex";
+import Storage from "../../utils/storage";
 export default {
   components: {
     LogoHeader
@@ -25,8 +26,30 @@ export default {
     ...mapState(["currentCreateAccount"]),
     ...mapState("common", ["registerWallet"])
   },
+  created() {
+    this.nodeLists().then(res => {
+      res.connect = true;
+      this.apiConfig(res).then(() => {
+        this.logoutBCXAccount();
+        this.deleteWallet();
+        // console.log(res[0].ws);
+        // res.forEach((element,index) => {
+        //   let choose_node = Storage.get('choose_node');
+        //   if(element.ws !== choose_node.ws){
+        //     this.switchAPINode(element.ws);
+        //   }
+        // });
+        // if (res.length > 1) {
+        // }
+      });
+    });
+  },
   mounted() {
-    this.nodeLists();
+    this.getAccounts().then(res => {
+      if (res.code === 1) {
+        this.$router.replace({ name: "home" });
+      }
+    });
   },
   methods: {
     ...mapMutations("wallet", ["addAccount"]),
@@ -35,7 +58,8 @@ export default {
       "setCurrentCreateAccount",
       "setCurrentCreateVisible"
     ]),
-    ...mapActions(["nodeLists"]),
+    ...mapActions("wallet", ["getAccounts", "deleteWallet"]),
+    ...mapActions(["nodeLists", "apiConfig", "switchAPINode"]),
     ...mapActions("account", ["logoutBCXAccount"]),
     ...mapMutations("common", [
       "WalletRegister",

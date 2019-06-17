@@ -59,7 +59,7 @@ function GetNewBCX() {
       chainId: "7d89b84f22af0b150780a2b121aa6c715b19261c8b7fe0fda3a564574ed7d3e9",
       coreAsset: "COCOS",
       faucetUrl: "http://47.93.62.96:8041",
-      name: "COCOS3.0节点",
+      name: "COCOS Node 1",
       type: "0",
       ws: "ws://47.93.62.96:8049",
       choose: true
@@ -96,7 +96,6 @@ function GetNewBCX() {
 }
 
 export function GetBCXWithState() {
-
   if (!bcx) {
     bcx = GetNewBCX()
   }

@@ -31,11 +31,11 @@
         <el-form-item :label="$t('label.memo')" prop="memo">
           <el-input class="no-border" v-model="formData.memo" type="text"></el-input>
         </el-form-item>
-        <label class="label">{{$t('label.charge')}}</label>
-        <div class="num">
+        <!-- <label class="label">{{$t('label.charge')}}</label> -->
+        <!-- <div class="num">
           {{fee}} COCOS
           <span class="test-coin">({{$t('title.test')}})</span>
-        </div>
+        </div>-->
         <el-form-item class="btns">
           <el-button type="primary" @click="onSubmit('form')">{{$t('button.send')}}</el-button>
           <el-button class="ml40" @click="$router.go(-1)">{{$t('button.cancel')}}</el-button>
@@ -162,7 +162,10 @@ export default {
     this.loading();
     if (this.accountType === "wallet") {
       this.OutPutKey().then(key => {
-        if (key.data.owner_private_keys && key.data.owner_private_keys.length) {
+        if (
+          !key.data.active_private_keys ||
+          !key.data.active_private_keys.length
+        ) {
           this.owner = true;
         }
       });
@@ -171,7 +174,12 @@ export default {
   },
   methods: {
     ...mapMutations("trans", ["setAccount"]),
-    ...mapActions("trans", ["tranferBCX", "queryTranferRate", "queryAsset"]),
+    ...mapActions("trans", [
+      "tranferBCX",
+      "queryTranferRate",
+      "queryAsset",
+      "tranferBCXFree"
+    ]),
     ...mapActions("account", ["UserAccount", "OutPutKey"]),
     async changeCoin() {
       await this.queryAsset({ assetId: this.coin }).then(res => {
@@ -206,7 +214,14 @@ export default {
     onSubmit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.queryTranferRate({ feeAssetId: this.coin }).then(res => {
+          this.setAccount({
+            toAccount: this.formData.to,
+            coin: this.coin,
+            amount: this.formData.amount,
+            memo: this.formData.memo
+          });
+          this.tranferBCXFree().then(res => {
+            this.fee = res.data.fee_amount.toFixed(this.precision);
             if (this.owner) {
               this.$kalert({
                 message: this.$i18n.t("verify.ownerKey")

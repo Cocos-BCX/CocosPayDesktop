@@ -167,9 +167,9 @@ export default {
       commit
     }) {
       try {
-        commit('loading', true, {
-          root: true
-        })
+        // commit('loading', true, {
+        //   root: true
+        // })
         let resData
         await NewBCX.deleteWallet().then(res => {
           commit('loading', false, {

@@ -13,6 +13,7 @@ import {
   GetBCXWithState
 } from '../utils/bcx'
 import router from '../router'
+
 let NewBCX = GetBCXWithState()
 Vue.use(Vuex)
 
@@ -183,7 +184,7 @@ export default new Vuex.Store({
         let privateKey = utils.decrypt(state.currentAccount.keystore, oldpwd)
         state.currentAccount.keystore = utils.encrypt(privateKey, newpwd)
       }
-    }
+    },
   },
   actions: {
     async lockCount({
@@ -207,7 +208,9 @@ export default new Vuex.Store({
         commit('loading', true, {
           root: true
         })
-        await NewBCX.init().then((res) => {
+        await NewBCX.init({
+          refresh: true,
+        }).then((res) => {
           commit('loading', false, {
             root: true
           })
@@ -221,7 +224,7 @@ export default new Vuex.Store({
     }) {
       try {
         let nodes = [];
-        axios
+        await axios
           .get("http://backend.test.cjfan.net/getParams")
           .then(response => {
             nodes = response.data.data;
@@ -230,6 +233,40 @@ export default new Vuex.Store({
           .catch(function (error) {
             console.log(error);
           });
+        return nodes;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async switchAPINode({
+      commit
+    }, url) {
+      try {
+        NewBCX.switchAPINode({
+          url
+        }).then(res => {})
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async apiConfig({
+      commit
+    }, Node) {
+      try {
+        NewBCX.apiConfig({
+          default_ws_node: Node.ws,
+          ws_node_list: [{
+            url: Node.ws,
+            name: Node.name
+          }],
+          networks: [{
+            core_asset: "COCOS",
+            chain_id: Node.chainId
+          }],
+          faucet_url: Node.url,
+          auto_reconnect: Node.connect,
+          worker: false
+        });
       } catch (e) {
         console.log(e);
       }

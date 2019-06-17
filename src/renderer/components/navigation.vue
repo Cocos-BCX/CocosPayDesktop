@@ -31,6 +31,7 @@ section {
   align-items: center;
   height: 60px;
   width: 90px;
+  cursor: pointer;
 }
 .title {
   margin-left: 8px;

@@ -67,6 +67,41 @@ export default {
         return e
       }
     },
+    //获取转账手续费
+    async tranferBCXFree({
+      commit,
+      state,
+      rootState
+    }) {
+      try {
+        commit('loading', true, {
+          root: true
+        })
+        let resData;
+        await NewBCX.transferAsset({
+          fromAccount: rootState.cocosAccount.accounts,
+          toAccount: state.tranferInfo.toAccount,
+          amount: state.tranferInfo.amount,
+          memo: state.tranferInfo.memo,
+          assetId: state.tranferInfo.coin,
+          isPropose: false,
+          onlyGetFee: true
+        }).then((res) => {
+          commit('loading', false, {
+            root: true
+          })
+          if (res.code !== 1) {
+            Alert({
+              message: CommonJs.getI18nMessages(I18n).error[res.code]
+            })
+          }
+          resData = res;
+        })
+        return resData
+      } catch (e) {
+        return e
+      }
+    },
     //查询链上资产精度
     async queryAsset({
       commit

@@ -30,7 +30,7 @@ export default {
         : this.$route + "" + new Date();
     }
   },
-  mounted() {}
+  created() {}
 };
 </script>
 <style lang="scss" scoped>

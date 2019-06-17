@@ -10,6 +10,7 @@
     require('module').globalPaths.push("<%= htmlWebpackPlugin.options.nodeModules.replace(/\\/g, '\\\\') %>")
   </script>
   <% } %>
+
 </head>
 
 <body>
@@ -24,7 +25,6 @@
       .replace(/\\/g, '\\\\')
   </script>
   <% } %>
-
   <!-- webpack builds are automatically injected -->
 </body>
 

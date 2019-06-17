@@ -35,7 +35,8 @@ export default {
         let resData
         await NewBCX.createAccountWithPassword({
           account: rootState.cocosAccount.accounts,
-          password: rootState.cocosAccount.passwords
+          password: rootState.cocosAccount.passwords,
+          autoLogin: true
         }).then((res) => {
           commit('loading', false, {
             root: true
@@ -67,9 +68,9 @@ export default {
       commit
     }) {
       try {
-        commit('loading', true, {
-          root: true
-        })
+        // commit('loading', true, {
+        //   root: true
+        // })
         let resData
         await NewBCX.logout().then((res) => {
           commit('loading', false, {

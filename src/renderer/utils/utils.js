@@ -1,5 +1,6 @@
 import Sha from 'jssha'
 import crypto from 'crypto'
+import BCX from "bcxjs-api";
 import ByteArray from './ByteArray'
 import {
   ec as EC
@@ -15,13 +16,13 @@ import {
 const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 export default class utils {
-  static sha256Text (string) {
+  static sha256Text(string) {
     const shaObj = new Sha('SHA-256', 'TEXT')
     shaObj.update(string)
     return shaObj.getHash('HEX')
   }
 
-  static sha256 (string) {
+  static sha256(string) {
     const shaObj = new Sha('SHA-256', 'HEX')
     shaObj.update(string)
     return shaObj.getHash('HEX')
@@ -31,11 +32,11 @@ export default class utils {
    * hash password to save local
    * @param {password} string
    */
-  static hashPassword (string) {
+  static hashPassword(string) {
     return this.sha256(this.stringToHex(string + '!~%$#^&*'))
   }
 
-  static validateAddress (address) {
+  static validateAddress(address) {
     if (address.length !== 34) {
       return false
     }
@@ -45,7 +46,24 @@ export default class utils {
     return false
   }
 
-  static privateKeyToPublicKey (privateKey) {
+  static init(Node) {
+    return new BCX({
+      default_ws_node: Node.ws,
+      ws_node_list: [{
+        url: Node.ws,
+        name: Node.name
+      }],
+      networks: [{
+        core_asset: "COCOS",
+        chain_id: Node.chainId
+      }],
+      faucet_url: Node.url,
+      auto_reconnect: false,
+      worker: false
+    });
+  }
+
+  static privateKeyToPublicKey(privateKey) {
     const ec = new EC('secp256k1')
     const key = ec.keyFromPrivate(privateKey, 'bytes')
     const publicKey = key.getPublic()
@@ -71,7 +89,7 @@ export default class utils {
     return ByteArray.fromHexString(publicKeyHex)
   }
 
-  static privateKeyToAddress (privateKey) {
+  static privateKeyToAddress(privateKey) {
     const privateKeyBytes = ByteArray.fromHexString(privateKey)
     const publicKeyBytes = this.privateKeyToPublicKey(privateKeyBytes)
     const addressBytes = this.publicKeyToAddress(publicKeyBytes)
@@ -81,14 +99,14 @@ export default class utils {
     )
   }
 
-  static publicKeyToAddress (pubKey) {
+  static publicKeyToAddress(pubKey) {
     const publicKey = (pubKey.length === 65) ? pubKey.slice(1) : pubKey
     const hash = keccak256(publicKey).toString()
 
     return ByteArray.fromHexString(address)
   }
 
-  static validatePrivateKey (privateKey) {
+  static validatePrivateKey(privateKey) {
     try {
       const address = this.privateKeyToAddress(privateKey)
       return this.validateAddress(address)
@@ -97,47 +115,47 @@ export default class utils {
     }
   }
 
-  static isFunction (obj) {
+  static isFunction(obj) {
     return typeof obj === 'function'
   }
 
-  static isHex (string) {
+  static isHex(string) {
     return typeof string === 'string' && !isNaN(parseInt(string, 16))
   }
 
-  static isInteger (number) {
+  static isInteger(number) {
     return Number.isInteger(
       Number(number)
     )
   }
 
-  static isString (string) {
+  static isString(string) {
     return Object.prototype.toString.call(string) === '[object String]'
   }
 
-  static stringToHex (string) {
+  static stringToHex(string) {
     return Buffer.from(string).toString('hex')
   }
 
-  static hexToString (hex) {
+  static hexToString(hex) {
     return Buffer.from(hex, 'hex').toString()
   }
 
-  static encrypt (data, password, algorithm = ENCRYPTION_ALGORITHM) {
+  static encrypt(data, password, algorithm = ENCRYPTION_ALGORITHM) {
     const cipher = crypto.createCipher(algorithm, password)
     let crypted = cipher.update(data, 'utf8', 'hex')
     crypted += cipher.final('hex')
     return crypted
   }
 
-  static decrypt (data, password, algorithm = ENCRYPTION_ALGORITHM) {
+  static decrypt(data, password, algorithm = ENCRYPTION_ALGORITHM) {
     const decipher = crypto.createDecipher(algorithm, password)
     let decrypted = decipher.update(data, 'hex', 'utf8')
     decrypted += decipher.final('utf8')
     return decrypted
   }
 
-  static injectPromise (func, ...args) {
+  static injectPromise(func, ...args) {
     return new Promise((resolve, reject) => {
       func(...args, (err, res) => {
         if (err) {
@@ -149,13 +167,13 @@ export default class utils {
     })
   }
 
-  static strippedHost () {
+  static strippedHost() {
     let host = window.location.hostname
     if (host.indexOf('www.') === 0) host = host.replace('www.', '')
     return host
   }
   // get system language
-  static getLanguage () {
+  static getLanguage() {
     let lang = ''
     if (window.navigator.appName === 'Netscape') {
       lang = window.navigator.language
@@ -173,12 +191,12 @@ export default class utils {
     return lang
   }
 
-  static toUtf8 (hex) {
+  static toUtf8(hex) {
     hex = hex.replace(/^0x/, '')
     return Buffer.from(hex, 'hex').toString('utf8')
   }
 
-  static byte2hexStr (byte) {
+  static byte2hexStr(byte) {
     const hexByteMap = '0123456789ABCDEF'
     let str = ''
     str += hexByteMap.charAt(byte >> 4)
@@ -186,13 +204,13 @@ export default class utils {
     return str
   }
 
-  static byteArray2hexStr (byteArray) {
+  static byteArray2hexStr(byteArray) {
     return byteArray.reduce((string, byte) => {
       return string + this.byte2hexStr(byte)
     }, '')
   }
 
-  static hexToBase58 (string) {
+  static hexToBase58(string) {
     const primary = this.sha256(string)
     const secondary = this.sha256(primary)
 
@@ -227,7 +245,7 @@ export default class utils {
     return digits.reverse().map(digit => ALPHABET[digit]).join('')
   }
 
-  static base58ToHex (string) {
+  static base58ToHex(string) {
     const bytes = [0]
 
     for (let i = 0; i < string.length; i++) {
@@ -272,7 +290,7 @@ export default class utils {
     }).join('')
   }
 
-  static base64ToHex (string) {
+  static base64ToHex(string) {
     const bin = atob(string.replace(/[ \r\n]+$/, ''))
     const hex = []
 
@@ -289,7 +307,7 @@ export default class utils {
     return hex.join('')
   }
 
-  static transformAddress (address) {
+  static transformAddress(address) {
     if (!this.isString(address)) {
       return false
     }
@@ -321,7 +339,7 @@ export default class utils {
     }
   }
 
-  static compare (x, y) {
+  static compare(x, y) {
     if (x === y) {
       return true
     }
@@ -361,7 +379,7 @@ export default class utils {
   }
 
   // gen Ecc priKey for bytes
-  static genPriKey () {
+  static genPriKey() {
     let ec = new EC('secp256k1')
     let key = ec.genKeyPair()
     let priKey = key.getPrivate()
@@ -373,7 +391,7 @@ export default class utils {
     return ByteArray.fromHexString(priKeyHex)
   }
 
-  static generateAccount () {
+  static generateAccount() {
     let priKeyBytes = this.genPriKey()
     let privateKey = ByteArray.toHexString(priKeyBytes)
     let address = this.privateKeyToAddress(privateKey)

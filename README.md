@@ -1,6 +1,8 @@
 ## CocosDesktop:
 
 CocosDesktop is a Desktop Application for Cocos-BCX.
+[windows](https://cocosbcx.oss-cn-beijing.aliyuncs.com/CocosDesktop.exe)
+[mac](https://cocosbcx.oss-cn-beijing.aliyuncs.com/CocosDesktop.dmg)
 
 ## Preparation:
 

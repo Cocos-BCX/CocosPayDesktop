@@ -35,6 +35,7 @@
     color: rgba(45, 45, 48, 1);
     line-height: 25px;
     justify-content: space-between;
+    cursor: pointer;
 
     &.active {
       background: rgba(238, 240, 244, 1);

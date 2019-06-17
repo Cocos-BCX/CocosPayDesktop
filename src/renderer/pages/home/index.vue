@@ -94,6 +94,11 @@ export default {
       "cocos"
     ])
   },
+  watch: {
+    "cocosAccount.accounts"() {
+      this.loadData();
+    }
+  },
   async mounted() {
     this.loadData();
     this.nodeLists();

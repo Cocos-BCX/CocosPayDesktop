@@ -17,7 +17,7 @@
     </div>
     <div class="item">
       <label class="label">{{$t('label.memo')}}：</label>
-      <div class="content">{{formData.memo}}</div>
+      <div class="content memo">{{formData.memo}}</div>
     </div>
     <div class="item">
       <label class="label">{{$t('label.charge')}}：</label>
@@ -45,7 +45,7 @@ export default {
         toAccount: this.formData.to,
         coin: this.coin,
         amount: this.formData.amount,
-        memo: ""
+        memo: this.formData.memo
       });
       this.tranferBCX().then(res => {
         if (res.code === 1) {
