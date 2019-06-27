@@ -14,6 +14,7 @@ const addPending = msg => pendingMessages.push(msg)
 
 ipcRenderer.on('result', (event, result) => {
   const pending = getPending(result.original)
+
   if (!pending) return
   pending.resolver(result.result)
 })
@@ -21,7 +22,6 @@ ipcRenderer.on('result', (event, result) => {
 const sendMessage = (windowId, type, data, resolver = null) => {
   const message = new WindowMessage(type, data, remote.getCurrentWindow().id, resolver)
   if (resolver) addPending(message)
-
   remote.BrowserWindow.fromId(windowId)
     .webContents
     .send(type, message)
@@ -86,7 +86,7 @@ export default class WindowService {
         win = null
       })
     }
-    win.setSize(width, height)
+    win.setSize(800, 600)
 
     win.once('ready-to-show', () => {
       onReady(win)

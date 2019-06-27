@@ -47,6 +47,8 @@ Vue.component('link-app', linkApp)
 Vue.component('locked', locked)
 Vue.component('transfer-request', transferRequest)
 Vue.component('contract', contract)
+Vue.component('transfer-request', transferRequest)
+//orderdeal
 
 // const i18n = new VueI18n({
 //   locale: store.state.curLng,

@@ -9,16 +9,18 @@
         </div>-->
         <p @click="loadData">{{$t('label.assert')}}</p>
         <div class="total">¥0.00</div>
-        <section class="coins" v-for="(item,index) in accountList" :key="index">
-          <section class="coin">
-            <img src="../../assets/img/cocos2.png" alt>
-            <!-- <div class="img" v-else></div> -->
-            <span>
-              {{item[0]}}
-              <span class="test-coin">({{$t('title.test')}})</span>
-            </span>
+        <section id="perfect-scroll">
+          <section class="coins" v-for="(item,index) in accountList" :key="index">
+            <section class="coin">
+              <img src="../../assets/img/cocos2.png" alt>
+              <!-- <div class="img" v-else></div> -->
+              <span>
+                {{item[0]}}
+                <span class="test-coin">({{$t('title.test')}})</span>
+              </span>
+            </section>
+            <span class="num">{{item[1]}}</span>
           </section>
-          <span class="num">{{item[1]}}</span>
         </section>
       </section>
       <section class="right">
@@ -33,7 +35,7 @@
           type="primary"
         >{{$t('button.transfer')}}</el-button>
         <p>{{$t('title.history')}}</p>
-        <action :tranfers="tranfers"/>
+        <action :tranfers="tranfers" :refresh="refresh"/>
         <!-- <section class="page">
           <el-pagination
             @prev-click="prevPage"
@@ -56,6 +58,8 @@ import { mapState, mapMutations, mapActions } from "vuex";
 import utils from "@/utils/utils";
 import Cocos from "@/models/cocos";
 import SocketService from "@/services/socketService";
+import PerfectScrollbar from "perfect-scrollbar";
+import { remote, ipcRenderer } from "electron";
 export default {
   name: "home",
   components: {
@@ -79,7 +83,9 @@ export default {
       lastId: "",
       firstId: "",
       accountList: [],
-      myInterval: null
+      myInterval: null,
+      refresh: false,
+      coinsScroller: null
     };
   },
   computed: {
@@ -91,7 +97,9 @@ export default {
       "cocosCount",
       "lockedTime",
       "currentAccount",
-      "cocos"
+      "cocos",
+      "firstLanguage",
+      "curLng"
     ])
   },
   watch: {
@@ -100,8 +108,26 @@ export default {
     }
   },
   async mounted() {
+    this.UpdateVersion().then(res => {
+      if (remote.app.loadCocosDesktop) {
+        this.setUpdate(res);
+        ipcRenderer.send("updateCocos", false);
+      }
+    });
     this.loadData();
     this.nodeLists();
+    if (!this.firstLanguage) {
+      this.$i18n.locale =
+        remote.app.localLanguage === "zh_CN" ||
+        remote.app.localLanguage === "zh_TW"
+          ? "ZH"
+          : "EN";
+      this.setCurLng(this.$i18n.locale);
+    }
+    this.coinsScroller = new PerfectScrollbar("#perfect-scroll", {
+      minScrollbarLength: 40,
+      maxScrollbarLength: 40
+    });
   },
   destroyed() {
     clearInterval(this.myInterval);
@@ -112,11 +138,13 @@ export default {
       "setCocosCount",
       "setIsLocked",
       "setCocos",
-      "setAccountType"
+      "setAccountType",
+      "setUpdate",
+      "setCurLng"
     ]),
     ...mapMutations("trans", ["setTranferList"]),
     ...mapMutations("wallet", ["addAccount", "updateAccount", "deleteWallet"]),
-    ...mapActions(["lockCount", "nodeLists"]),
+    ...mapActions(["lockCount", "nodeLists", "UpdateVersion"]),
     ...mapActions("account", [
       "loadingBCXAccount",
       "UserAccount",
@@ -206,9 +234,6 @@ export default {
         //   if (j < 10) {
         //     j++;
         //     list.push(res[i]);
-        //     console.log(res.length - 1);
-        //     console.log(i);
-
         //     if (res.length - 2 === i) {
         //       this.totalTx.push(list);
         //     }
@@ -237,6 +262,7 @@ export default {
     },
     async refreshAccount() {
       SocketService.initialize();
+      this.refresh = true;
       this.loadData();
       if (!this.cocos) {
         const cocos = Cocos.placeholder();

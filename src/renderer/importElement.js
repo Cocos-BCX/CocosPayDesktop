@@ -16,7 +16,8 @@ import {
   RadioGroup,
   Pagination,
   Upload,
-  Icon
+  Icon,
+  Loading
 } from 'element-ui'
 Vue.use(Radio)
 Vue.use(RadioGroup)
@@ -35,5 +36,5 @@ Vue.use(Tabs)
 Vue.use(TabPane)
 Vue.use(Pagination)
 Vue.use(Upload)
-
+Vue.use(Loading)
 Vue.prototype.$confirm = MessageBox.confirm

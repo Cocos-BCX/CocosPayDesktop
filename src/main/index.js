@@ -1,6 +1,7 @@
 import {
   app,
   Menu,
+  ipcMain,
   BrowserWindow
 } from 'electron'
 global.appShared = {
@@ -25,17 +26,29 @@ const callDeepLink = url => {
   }
 }
 
+ipcMain.on('updateCocos', (event, arg) => {
+  app.loadCocosDesktop = arg
+  // event.returnValue = 'pong'
+})
 
 function createWindow() {
   /**
    * Initial window options
    */
+  const osLocale = require('os-locale');
+  (async () => {
+    app.localLanguage = await osLocale()
+    //=> 'en-US'
+  })();
+  app.loadCocosDesktop = true;
+
   mainWindow = new BrowserWindow({
     height: 900,
     useContentSize: true,
     width: 1200,
-    minWidth: 1000,
-    minHeight: 800,
+    minWidth: 900,
+    minHeight: 700,
+    maxHeight: 850,
     show: false // 先隐藏
   })
 
@@ -136,6 +149,9 @@ function createWindow() {
   //   })
   // })
 }
+
+var packages = require("../../package.json");
+app.CocosDesktop = packages.version
 
 app.on('ready', createWindow)
 

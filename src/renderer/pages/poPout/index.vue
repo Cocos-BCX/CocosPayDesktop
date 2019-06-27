@@ -15,16 +15,28 @@
         @returned="returnResult"
       ></transfer-request>
       <contract
-        v-if="popupType === apiActions.CALLCONTRACTFUNCTION"
+        v-if="popupType === apiActions.CALLCONTRACTFUNCTION || popupType === apiActions.CREATE_NH_ASSET_ORDER || popupType === apiActions.TRANSFER_NH_ASSET || popupType === apiActions.FILL_NH_ASSET_ORDER || popupType === apiActions.CANCEL_NH_ASSET_ORDER"
         :payload="payload"
+        :popupType="popupType"
         :plugin-origin="pluginOrigin"
         @returned="returnResult"
       ></contract>
+      <!-- <createnhorder
+        v-if="popupType === apiActions.CREATE_NH_ASSET_ORDER"
+        :payload="payload"
+        :plugin-origin="pluginOrigin"
+        @returned="returnResult"
+      ></createnhorder>
+      <orderdeal v-if :payload="payload" :plugin-origin="pluginOrigin" @returned="returnResult"></orderdeal>-->
     </section>
     <locked v-else></locked>
   </section>
 </template>
 <script>
+// export const TRANSFER_NH_ASSET = 'transferNHAsset'
+// export const CREATE_NH_ASSET_ORDER = 'creatNHAssetOrder'
+// export const FILL_NH_ASSET_ORDER = 'fillNHAssetOrder'
+// export const CANCEL_NH_ASSET_ORDER = 'cancelNHAssetOrder'
 import { mapMutations, mapState } from "vuex";
 import Cocos from "../../models/cocos";
 import WindowService from "../../services/windowService";

@@ -41,9 +41,6 @@ export default {
   computed: {
     ...mapState(["privateKeys", "temporaryKeys"])
   },
-  created() {
-    this.lang = this.curLng;
-  },
   methods: {
     ...mapMutations("common", ["privateStore"]),
     ...mapMutations(["settemporaryKeys", "setKeys"]),

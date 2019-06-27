@@ -29,6 +29,8 @@ export default {
     resource: 'Resource',
     copy: 'Copy',
     addNode: 'Add Node',
+    editNode: 'Edit Node',
+    deleteNode: 'Delete Node',
     sure: 'Confirm',
     refresh: 'Refresh',
     copyPrivate: 'CopyPrivate',
@@ -126,6 +128,9 @@ export default {
     tempassword: 'Please set a temporary wallet password',
     loginWay: 'The login way',
     login: 'Login',
+    update: 'Update',
+    version: 'Update Version',
+    updateLog: 'Update Log',
     back: 'Back',
     test: 'Test',
     test1: '(Test)',
@@ -151,7 +156,9 @@ export default {
     removeAccount: 'Exit Account',
     signature: 'Request Signature',
     locked: 'is locked!',
-    walletPassword: 'Wallet Password'
+    walletPassword: 'Wallet Password',
+    newUpdate: 'This is the latest version',
+    contract: 'Contract',
   },
   // alert
   alert: {
@@ -225,6 +232,7 @@ export default {
     ptamount: 'Value',
     ptcontract: 'Contract：',
     ptpayment: 'Payment：',
+    otcAccount: 'Exchange：',
     pttype: 'Type：',
     newAccout: 'New Account',
     operation: 'Operation',
@@ -232,6 +240,10 @@ export default {
     keyFile: 'Key File',
     restoreKeyFile: 'Restore Key File',
     uploadKeyFile: 'Upload Key File（.bin）',
+    version: 'The Current Version',
+    user: 'User',
+    nhTitle: 'NH Asset transfers',
+    nhId: 'NH Asset ID',
   },
   // settings
   settings: {
@@ -250,7 +262,8 @@ export default {
     modifyPassword: 'Password',
     lockSetting: 'Lock Setting',
     about: 'About',
-    lock: 'Lock'
+    lock: 'Lock',
+    update: 'Check Update',
   },
   // unit
   unit: {

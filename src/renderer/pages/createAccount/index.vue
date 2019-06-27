@@ -151,10 +151,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["curLng", "accounts", "passwords", "accountType", "cocos"])
-  },
-  created() {
-    this.lang = this.curLng;
+    ...mapState(["accounts", "passwords", "accountType", "cocos"])
   },
   methods: {
     ...mapMutations([
@@ -212,12 +209,12 @@ export default {
                   const cocos = Cocos.fromJson(sfj);
                   this.setCocos(cocos);
                 }
+                this.$router.push({ name: "home" });
                 this.OutPutKey().then(key => {
                   if (key.code === 1) {
                     this.settemporaryKeys(key.data.active_private_keys);
                     this.setKeys(key.data.owner_private_keys);
                     this.privateStore(true);
-                    this.$router.push({ name: "home" });
                   }
                 });
                 //   }
@@ -235,6 +232,15 @@ export default {
               //   password: ""
               // });
               if (res.code === 1) {
+                SocketService.initialize();
+                if (!this.cocos) {
+                  const cocos = Cocos.placeholder();
+                  this.setCocos(cocos);
+                } else if (!(this.cocos instanceof Cocos)) {
+                  let sfj = JSON.parse(JSON.stringify(this.cocos));
+                  const cocos = Cocos.fromJson(sfj);
+                  this.setCocos(cocos);
+                }
                 this.OutWalletPutKey().then(key => {
                   if (key.code === 1) {
                     this.settemporaryKeys(key.data.active_private_keys);

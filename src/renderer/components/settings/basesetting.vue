@@ -11,7 +11,7 @@
         ></el-option>
       </el-select>
       <span class="mt45">{{$t('message.time')}}</span>
-      <section class="mt30">
+      <section class="mt20">
         <el-radio-group v-model="lockTime" @change="chooseTimeLock">
           <el-radio
             v-for="(item,index) in times"
@@ -52,11 +52,11 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["setCurLng", "setlockedTime"]),
+    ...mapMutations(["setFirstLanguage", "setlockedTime", "setCurLng"]),
     changeLanguage(e) {
-      this.setCurLng(this.lang);
+      this.setFirstLanguage(true);
       this.$i18n.locale = this.lang;
-      ipcRenderer.send("language", this.lang);
+      this.setCurLng(this.lang);
     },
     chooseTimeLock(e) {
       this.setlockedTime(e);
@@ -64,7 +64,6 @@ export default {
   },
   mounted() {
     this.lang = this.$i18n.locale;
-    ipcRenderer.send("language", this.lang);
     this.lockTime = this.lockedTime ? this.lockedTime : this.times[0].time;
   }
 };

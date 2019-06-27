@@ -23,7 +23,7 @@
       </el-form-item>
       <el-form-item class="mt110">
         <el-button type="primary" @click="StoreAccount('formwallet')">{{$t('button.submit')}}</el-button>
-        <el-button class="ml40" @click="deleteWallet">{{$t('button.reset')}}</el-button>
+        <el-button class="ml40" @click="deleteWalletRest()">{{$t('button.reset')}}</el-button>
       </el-form-item>
     </el-form>
   </section>
@@ -31,6 +31,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
 import Cocos from "../../models/cocos";
+import CommonJs from "../../config/common";
 export default {
   name: "recover",
   data() {
@@ -88,6 +89,13 @@ export default {
           message: CommonJs.getI18nMessages(I18n).label.uploadKeyFile
         });
       }
+    },
+    deleteWalletRest() {
+      this.deleteWallet().then(res => {
+        this.$router.replace({
+          name: "home"
+        });
+      });
     },
     StoreAccount(formName) {
       if (!this.file) {

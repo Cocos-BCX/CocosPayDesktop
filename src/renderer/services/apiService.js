@@ -47,6 +47,168 @@ export default class ApiService {
       result: GetBCXWithState().getAccountInfo()
     }
   }
+  //CREATE_NH_ASSET_ORDER
+  static async [Actions.CREATE_NH_ASSET_ORDER](request) {
+    return new Promise(resolve => {
+      let response
+      PopupService.push(Popup.popout(request, async ({
+        result
+      }) => {
+        if (!result) {
+          return resolve(response = {
+            id: request.id,
+            result: {
+              type: "signature_rejected",
+              code: 402,
+              // isError: true,
+              message: 'User rejected the signature request'
+            }
+          })
+        }
+        response = GetBCXWithState().creatNHAssetOrder({
+          otcAccount: request.payload.otcAccount,
+          orderFee: request.payload.orderFee,
+          NHAssetId: request.payload.NHAssetId,
+          runtime: request.payload.runtime,
+          price: request.payload.price,
+          priceAssetId: request.payload.priceAssetId,
+          expiration: request.payload.expiration,
+          memo: request.payload.memo,
+          callback: function (res) {
+            if (res.code !== 1) {
+              return resolve({
+                // id: request.id,
+                // message: CommonJs.getI18nMessages(I18n).error[res.code],
+                // isError: true
+                id: request.id,
+                result: res
+              })
+            } else {
+              store.dispatch('account/UserAccount')
+              return resolve({
+                id: request.id,
+                result: res
+              })
+            }
+          }
+        })
+      }))
+    })
+  }
+
+  static async [Actions.TRANSFER_NH_ASSET](request) {
+    return new Promise(resolve => {
+      let response
+      PopupService.push(Popup.popout(request, async ({
+        result
+      }) => {
+        if (!result) {
+          return resolve(response = {
+            id: request.id,
+            result: {
+              type: "signature_rejected",
+              code: 402,
+              // isError: true,
+              message: 'User rejected the signature request'
+            }
+          })
+        }
+        response = GetBCXWithState().transferNHAsset({
+          toAccount: request.payload.toAccount,
+          NHAssetIds: request.payload.NHAssetIds,
+          callback: function (res) {
+            if (res.code !== 1) {
+              return resolve({
+                id: request.id,
+                result: res
+              })
+            } else {
+              store.dispatch('account/UserAccount')
+              return resolve({
+                id: request.id,
+                result: res
+              })
+            }
+          }
+        })
+      }))
+    })
+  }
+  static async [Actions.CANCEL_NH_ASSET_ORDER](request) {
+    return new Promise(resolve => {
+      let response
+      PopupService.push(Popup.popout(request, async ({
+        result
+      }) => {
+        if (!result) {
+          return resolve(response = {
+            id: request.id,
+            result: {
+              type: "signature_rejected",
+              code: 402,
+              // isError: true,
+              message: 'User rejected the signature request'
+            }
+          })
+        }
+        response = GetBCXWithState().cancelNHAssetOrder({
+          orderId: request.payload.orderId,
+          callback: function (res) {
+            if (res.code !== 1) {
+              return resolve({
+                id: request.id,
+                result: res
+              })
+            } else {
+              store.dispatch('account/UserAccount')
+              return resolve({
+                id: request.id,
+                result: res
+              })
+            }
+          }
+        })
+      }))
+    })
+  }
+  static async [Actions.FILL_NH_ASSET_ORDER](request) {
+    return new Promise(resolve => {
+      let response
+      PopupService.push(Popup.popout(request, async ({
+        result
+      }) => {
+        if (!result) {
+          return resolve(response = {
+            id: request.id,
+            result: {
+              type: "signature_rejected",
+              code: 402,
+              // isError: true,
+              message: 'User rejected the signature request'
+            }
+          })
+        }
+        response = GetBCXWithState().fillNHAssetOrder({
+          orderId: request.payload.orderId,
+          callback: function (res) {
+            if (res.code !== 1) {
+              return resolve({
+                id: request.id,
+                result: res
+              })
+            } else {
+              store.dispatch('account/UserAccount')
+              return resolve({
+                id: request.id,
+                result: res
+              })
+            }
+          }
+        })
+      }))
+    })
+  }
+
   static async [Actions.CALLCONTRACTFUNCTION](request) {
     return new Promise(resolve => {
       let response
@@ -54,11 +216,15 @@ export default class ApiService {
         result
       }) => {
         if (!result) {
-          response = {
+          return resolve(response = {
             id: request.id,
-            result: 'signature_rejected:User rejected the transfer request'
-          }
-          return response
+            result: {
+              type: "signature_rejected",
+              code: 402,
+              // isError: true,
+              message: 'User rejected the signature request'
+            }
+          })
         }
         response = GetBCXWithState().callContractFunction({
           nameOrId: request.payload.nameOrId,
@@ -69,9 +235,6 @@ export default class ApiService {
           callback: function (res) {
             if (res.code !== 1) {
               return resolve({
-                // id: request.id,
-                // message: CommonJs.getI18nMessages(I18n).error[res.code],
-                // isError: true
                 id: request.id,
                 result: res
               })
@@ -95,11 +258,15 @@ export default class ApiService {
         result
       }) => {
         if (!result) {
-          response = {
+          return resolve(response = {
             id: request.id,
-            result: 'signature_rejected:User rejected the transfer request'
-          }
-          return response
+            result: {
+              type: "signature_rejected",
+              code: 402,
+              // isError: true,
+              message: 'User rejected the signature request'
+            }
+          })
         }
         response = GetBCXWithState().transferAsset({
           fromAccount: store.state.cocosAccount.accounts,
@@ -112,9 +279,6 @@ export default class ApiService {
         }).then((res) => {
           if (res.code !== 1) {
             return resolve({
-              // id: request.id,
-              // message: CommonJs.getI18nMessages(I18n).error[res.code],
-              // isError: true
               id: request.id,
               result: res
             })

@@ -13,6 +13,7 @@
 import LogoHeader from "../../components/logo-header";
 import { mapState, mapMutations, mapActions } from "vuex";
 import Storage from "../../utils/storage";
+import { remote, ipcRenderer } from "electron";
 export default {
   components: {
     LogoHeader
@@ -23,43 +24,71 @@ export default {
     };
   },
   computed: {
-    ...mapState(["currentCreateAccount"]),
+    ...mapState(["currentCreateAccount", "firstLanguage"]),
     ...mapState("common", ["registerWallet"])
   },
   created() {
     this.nodeLists().then(res => {
-      res.connect = true;
-      this.apiConfig(res).then(() => {
-        this.logoutBCXAccount();
-        this.deleteWallet();
-        // console.log(res[0].ws);
-        // res.forEach((element,index) => {
-        //   let choose_node = Storage.get('choose_node');
-        //   if(element.ws !== choose_node.ws){
-        //     this.switchAPINode(element.ws);
-        //   }
-        // });
-        // if (res.length > 1) {
-        // }
+      if (!Array.isArray(res)) return;
+      res[0].connect = true;
+      this.apiConfig(res[0]).then(() => {
+        this.init().then(() => {
+          this.getAccounts().then(account => {
+            if (
+              account.current_account &&
+              account.current_account.account_name
+            ) {
+              this.setAccountType(account.current_account.mode);
+              this.setAccount({
+                account: account.current_account.account_name,
+                password: ""
+              });
+              this.setLogin(true);
+              this.$router.replace({ name: "home" });
+            }
+          });
+        });
       });
     });
   },
   mounted() {
-    this.getAccounts().then(res => {
-      if (res.code === 1) {
-        this.$router.replace({ name: "home" });
+    // this.UpdateVersion();
+    // this.IndexedDBQuery()
+    if (!this.firstLanguage) {
+      this.$i18n.locale =
+        remote.app.localLanguage === "zh_CN" ||
+        remote.app.localLanguage === "zh_TW"
+          ? "ZH"
+          : "EN";
+      this.setCurLng(this.$i18n.locale);
+    }
+    this.UpdateVersion().then(res => {
+      if (remote.app.loadCocosDesktop) {
+        this.setUpdate(res);
+        ipcRenderer.send("updateCocos", false);
       }
     });
   },
   methods: {
-    ...mapMutations("wallet", ["addAccount"]),
     ...mapMutations([
       "setCurrentAccount",
       "setCurrentCreateAccount",
-      "setCurrentCreateVisible"
+      "setCurrentCreateVisible",
+      "setAccount",
+      "setAccountType",
+      "setLogin",
+      "setCurLng",
+      "setUpdate"
     ]),
-    ...mapActions("wallet", ["getAccounts", "deleteWallet"]),
-    ...mapActions(["nodeLists", "apiConfig", "switchAPINode"]),
+    ...mapActions("wallet", ["getAccounts", "deleteWallet", "addAccount"]),
+    ...mapActions([
+      "nodeLists",
+      "apiConfig",
+      "switchAPINode",
+      "init",
+      "UpdateVersion",
+      "IndexedDBQuery"
+    ]),
     ...mapActions("account", ["logoutBCXAccount"]),
     ...mapMutations("common", [
       "WalletRegister",

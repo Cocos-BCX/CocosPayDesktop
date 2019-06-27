@@ -42,6 +42,14 @@ export default {
         return ele
       })
     },
+    addWhiteList(state, white) {
+      state.whiteList = [...state.whiteList, white]
+    },
+    removeWhiteList(state, white) {
+      state.whiteList = state.whiteList.filter(ele => {
+        return ele.id !== white.id
+      })
+    },
     removeAccount(state, account) {
       state.accounts = state.accounts.filter(ele => {
         return ele.address !== account.address
@@ -129,7 +137,14 @@ export default {
       commit
     }) {
       try {
-        return NewBCX.getAccounts()
+        commit('loading', true, {
+          root: true
+        })
+        let account = await NewBCX.getAccounts()
+        commit('loading', false, {
+          root: true
+        })
+        return account
       } catch (e) {
         return e
       }

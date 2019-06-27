@@ -15,22 +15,28 @@
 </template>
 <script>
 import Dialogs from "./components/dialog/dialog";
-import { mapState } from "vuex";
+import Update from "./components/dialog/update";
+import { mapState, mapMutations } from "vuex";
+// import { remote } from "electron";
 import Storage from "./utils/storage";
+import axios from "axios";
 export default {
   name: "root",
   components: {
-    Dialogs
+    Dialogs,
+    Update
   },
   computed: {
-    ...mapState(["loading"]),
+    ...mapState(["loading", "update"]),
     key: function() {
       return this.$route.name !== undefined
         ? this.$route.name + "" + new Date()
         : this.$route + "" + new Date();
     }
   },
-  created() {}
+  methods: {
+    ...mapMutations(["setUpdate", "setupdateMessage"])
+  }
 };
 </script>
 <style lang="scss" scoped>

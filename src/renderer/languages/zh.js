@@ -36,6 +36,8 @@ export default {
     save: '保存',
     cancel: '取消',
     addNode: '添加节点',
+    editNode: '编辑节点',
+    deleteNode: '删除节点',
     copyAddress: '复制收款地址',
     send: '发送',
     surePay: '确认支付',
@@ -128,6 +130,9 @@ export default {
     loginWay: '登录方式',
     login: '登录',
     back: '返回',
+    update: '更新',
+    version: '更新版本',
+    updateLog: '更新日志',
     test: '测试',
     test1: '(测试)',
     privateKey: '私钥',
@@ -152,7 +157,9 @@ export default {
     removeAccount: '退出账号',
     signature: '签名请求',
     locked: '已锁定!',
-    walletPassword: '钱包密码'
+    walletPassword: '钱包密码',
+    newUpdate: '当前已经是最新版本',
+    contract: '合约调用',
   },
   // alert
   alert: {
@@ -220,12 +227,13 @@ export default {
     CocosPrivate: '请在下方输入您的COCOS账户私钥',
     property: '属性',
     json: 'json数据',
-    contract: '合同信息',
+    contract: '合约',
     ptsite: '站点：',
     ptaddress: '转出',
     ptfrom: '转入',
     ptamount: '数量',
-    ptcontract: '合约',
+    ptcontract: '合约：',
+    otcAccount: '交易所',
     ptpayment: '支付：',
     pttype: '类型：',
     newAccout: '添加新账户',
@@ -234,6 +242,10 @@ export default {
     keyFile: '文件密钥',
     restoreKeyFile: '上传文件密钥',
     uploadKeyFile: '请上传文件（.bin）格式',
+    version: '当前版本',
+    user: '授权人',
+    nhTitle: 'NH资产转移',
+    nhId: 'NH资产ID',
   },
   // settings
   settings: {
@@ -252,7 +264,8 @@ export default {
     modifyPassword: '修改密码',
     lockSetting: '锁定设置',
     about: '关于CocosDesktop',
-    lock: '立即锁定'
+    lock: '立即锁定',
+    update: '检查更新',
   },
   // unit
   unit: {

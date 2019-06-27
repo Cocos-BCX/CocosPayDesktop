@@ -7,11 +7,11 @@ import {
 let popouts = []
 
 export default class PopupService {
-  static remove (popup) {
+  static remove(popup) {
     this.$store.commit('releasePopup', popup)
   }
 
-  static push (popup) {
+  static push(popup) {
     if (store.state.popups.find(x => JSON.stringify(x.data) === JSON.stringify(popup.data))) {
       return false
     }
@@ -28,7 +28,7 @@ export default class PopupService {
     }
   }
 
-  static openPopOut (popup) {
+  static openPopOut(popup) {
     let responded = false
     const cocos = store.state.cocos
     const {
@@ -65,7 +65,7 @@ export default class PopupService {
     )
   }
 
-  static promptGuard (prompt, callback) {
+  static promptGuard(prompt, callback) {
     prompt.data.callback = callback
     this.push(prompt)
   }

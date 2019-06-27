@@ -222,6 +222,30 @@ export default {
           account: rootState.cocosAccount.accounts,
           password: rootState.cocosAccount.passwords
         }).then((res) => {
+          if (res.code === 1) {
+            // const request = window.indexedDB.open('store', 1);
+            // request.onupgradeneeded = function (event) {
+            //   var db = event.target.result;
+            //   var objectStore = db.createObjectStore('name', {
+            //     keyPath: 'id',
+            //     autoIncrement: true
+            //   });
+            // }
+            // request.onsuccess = function (event) {
+            //   var db = event.target.result;
+            //   var transaction = db.transaction(['store'], 'readwrite');
+            //   var objectStore = transaction.objectStore('store');
+            //   objectStore.add({
+            //     name: 'a',
+            //     age: 10
+            //   });
+            //   objectStore.add({
+            //     name: 'b',
+            //     age: 20
+            //   });
+            // }
+          }
+
           commit('loading', false, {
             root: true
           })

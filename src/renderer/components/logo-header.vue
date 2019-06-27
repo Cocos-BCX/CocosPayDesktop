@@ -4,14 +4,14 @@
   </header>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 
 export default {
-  name: 'logo-header',
+  name: "logo-header",
   methods: {
-    ...mapActions('account', ['logoutBCXAccount'])
+    ...mapActions("account", ["logoutBCXAccount"])
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 header {

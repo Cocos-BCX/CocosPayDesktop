@@ -102,6 +102,33 @@ export default {
         return e
       }
     },
+    //合约手续费查询
+    async callContractFunctionFree({
+      commit,
+      state
+    }, params) {
+      try {
+        commit('loading', true, {
+          root: true
+        })
+        params.onlyGetFee = true
+        let resData;
+        await NewBCX.callContractFunction(params).then((res) => {
+          commit('loading', false, {
+            root: true
+          })
+          if (res.code !== 1) {
+            Alert({
+              message: CommonJs.getI18nMessages(I18n).error[res.code]
+            })
+          }
+          resData = res;
+        })
+        return resData
+      } catch (e) {
+        return e
+      }
+    },
     //查询链上资产精度
     async queryAsset({
       commit
@@ -157,6 +184,29 @@ export default {
         return e
       }
     },
+    //转移NH资产
+    async transferNHAsset({
+      commit,
+      state
+    }, params) {
+      try {
+        let resData;
+        await NewBCX.transferNHAsset({
+          toAccount: params.toAccount,
+          NHAssetIds: params.NHAssetIds
+        }).then(res => {
+          if (res.code !== 1) {
+            Alert({
+              message: CommonJs.getI18nMessages(I18n).error[res.code]
+            })
+          }
+          resData = res;
+        })
+        return resData
+      } catch (e) {
+        return e
+      }
+    },
     // 查询转账列表
     async queryTranferList({
       commit,
@@ -183,7 +233,7 @@ export default {
           })
           if (res.code === 1) {
             res.data.map((item) => {
-              if (item.type === 'transfer') {
+              if (item.type === 'transfer' || item.type === 'call_contract_function' || item.type === 'transfer_nh_asset') {
                 resData.push(item)
               }
             })

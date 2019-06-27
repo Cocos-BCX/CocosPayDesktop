@@ -26,6 +26,7 @@
         <settings-secret v-if="type.value === 'secret'"/>
         <settings-store-wallet v-if="type.value === 'storeWallet'"/>
         <settings-store-account v-if="type.value === 'storeAccount'"/>
+        <update v-if="type.value === 'update'" :cancel="true"></update>
       </section>
     </div>
   </section>
@@ -42,6 +43,7 @@ import SettingsSecret from "@/components/settings/secret";
 import SettingsStoreWallet from "@/components/settings/storewallet";
 import SettingsStoreAccount from "@/components/settings/storeaccount";
 import NodeChange from "@/components/settings/nodechange";
+import Update from "@/components/dialog/update";
 export default {
   name: "home",
   components: {
@@ -54,7 +56,8 @@ export default {
     SettingsSecret,
     SettingsStoreWallet,
     SettingsStoreAccount,
-    NodeChange
+    NodeChange,
+    Update
   },
   data() {
     return {
@@ -100,6 +103,14 @@ export default {
           value: "node",
           login: true,
           type: "node",
+          active: false,
+          locked: true
+        },
+        {
+          title: "settings.update",
+          value: "update",
+          login: true,
+          type: "base",
           active: false,
           locked: true
         },
@@ -164,7 +175,9 @@ export default {
         this.setting.forEach(item => {
           if (
             (item.value === "recover" && this.accountType === "wallet") ||
+            item.value === "base" ||
             item.value === "logout" ||
+            item.value === "update" ||
             item.value === "node"
             //  || (item.value === "import" && !this.isImportKeys)
           ) {

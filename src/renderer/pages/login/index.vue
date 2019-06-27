@@ -217,9 +217,6 @@ export default {
     this.setAccountAdd(false);
   },
   methods: {
-    ...mapActions("wallet", ["deleteWallet"]),
-    ...mapActions("wallet", ["setSeed", "deleteWallet"]),
-    ...mapMutations("wallet", ["setPassword"]),
     ...mapMutations("common", ["AccountLogin"]),
     ...mapMutations([
       "setCocos",
@@ -242,10 +239,24 @@ export default {
       "importPrivateKey",
       "LoadWalletFile",
       "deleteWallet",
-      "RestoreWallet"
+      "RestoreWallet",
+      "setSeed",
+      "setPassword"
     ]),
+    ...mapActions(["IndexedDBAdd"]),
     rememberCount() {
       this.setLoginCountStore(this.remember ? this.formData.account : "");
+    },
+    connectSocket() {
+      SocketService.initialize();
+      if (!this.cocos) {
+        const cocos = Cocos.placeholder();
+        this.setCocos(cocos);
+      } else if (!(this.cocos instanceof Cocos)) {
+        let sfj = JSON.parse(JSON.stringify(this.cocos));
+        const cocos = Cocos.fromJson(sfj);
+        this.setCocos(cocos);
+      }
     },
     changeType() {
       this.setChangeRadio(true);
@@ -289,15 +300,7 @@ export default {
                       account: result.data.account_name,
                       password: ""
                     });
-                    SocketService.initialize();
-                    if (!this.cocos) {
-                      const cocos = Cocos.placeholder();
-                      this.setCocos(cocos);
-                    } else if (!(this.cocos instanceof Cocos)) {
-                      let sfj = JSON.parse(JSON.stringify(this.cocos));
-                      const cocos = Cocos.fromJson(sfj);
-                      this.setCocos(cocos);
-                    }
+                    this.connectSocket();
                     this.$router.push({ name: "home" });
                   }
                 });
@@ -354,21 +357,14 @@ export default {
           return;
         }
         if (res.code === 1) {
-          SocketService.initialize();
+          // this.IndexedDBAdd({ name: this.formData.account });
+          this.connectSocket();
           this.setAccount({
             account: this.formData.account,
             password: ""
           });
           if (this.remember) {
             this.setLoginCountStore(this.formData.account);
-          }
-          if (!this.cocos) {
-            const cocos = Cocos.placeholder();
-            this.setCocos(cocos);
-          } else if (!(this.cocos instanceof Cocos)) {
-            let sfj = JSON.parse(JSON.stringify(this.cocos));
-            const cocos = Cocos.fromJson(sfj);
-            this.setCocos(cocos);
           }
           this.AccountLogin(false);
           this.$router.push({ name: "home" });
@@ -396,19 +392,11 @@ export default {
           this.setIsImportKeys(true);
           this.AccountLogin(false);
           this.$router.push({ name: "home" });
-          SocketService.initialize();
           this.setAccount({
             account: res.data.account_name,
             password: ""
           });
-          if (!this.cocos) {
-            const cocos = Cocos.placeholder();
-            this.setCocos(cocos);
-          } else if (!(this.cocos instanceof Cocos)) {
-            let sfj = JSON.parse(JSON.stringify(this.cocos));
-            const cocos = Cocos.fromJson(sfj);
-            this.setCocos(cocos);
-          }
+          this.connectSocket();
         }
       });
     }

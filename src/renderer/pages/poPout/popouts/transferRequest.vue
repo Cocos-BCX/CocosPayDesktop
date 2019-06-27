@@ -7,7 +7,7 @@
     <section class="detail">
       <section class="left">
         <p>{{$t('label.ptcontract')}} & {{$t('label.operation')}}</p>
-        <p>cocos -> transfer</p>
+        <p>Cocos -> transfer</p>
       </section>
       <section class="right">
         <div class="item">
@@ -22,9 +22,9 @@
           <span>quantity</span>
           <span>{{amount}} COCOS ({{this.$t('title.test')}})</span>
         </div>
-        <div class="item">
+        <div class="item memo">
           <span>memo</span>
-          <span>{{memo}}</span>
+          <div>{{memo}}</div>
         </div>
       </section>
     </section>
@@ -47,7 +47,7 @@ import PopupService from "../../../services/PopupService";
 import { Popup } from "../../../models/popups/Popup";
 import { GetBCXWithState } from "../../../utils/bcx";
 import utils from "../../../utils/utils";
-
+import AuthorizedApp from "../../../models/authorizedApp";
 export default {
   data() {
     return {
@@ -62,6 +62,7 @@ export default {
   },
   computed: {
     ...mapState(["state", "cocosAccount"]),
+    ...mapState("wallet", ["whiteList"]),
     to() {
       return this.payload.toAccount;
     },
@@ -70,6 +71,9 @@ export default {
     },
     options() {
       return this.payload.options || {};
+    },
+    app() {
+      return AuthorizedApp.fromJson(this.payload);
     },
     symbol() {
       return this.payload.symbol;
@@ -99,32 +103,29 @@ export default {
         balance: await this.getBalance(account)
       });
     });
-    let transfer = JSON.parse(localStorage.getItem("tranferWhite")) || [];
-    if (transfer.length) {
-      transfer.forEach(item => {
-        if (
-          utils.compare(item, {
-            from: this.cocosAccount.accounts,
-            toAccount: this.to,
-            amount: this.amount
-          })
-        ) {
-          this.returnResult(true);
-          this.isWhite = true;
-        }
-      });
+    let whiteList = JSON.parse(localStorage.getItem("whiteList")) || [];
+    let white = whiteList.some(ele => {
+      return (
+        ele.domain === this.app.origin &&
+        ele.account === this.cocosAccount.accounts
+      );
+    });
+    if (white) {
+      this.returnResult(true);
+      this.isWhite = true;
     }
   },
   methods: {
+    ...mapMutations("wallet", ["addWhiteList"]),
     returnResult(result) {
-      let transfer = JSON.parse(localStorage.getItem("tranferWhite")) || [];
-      if (this.checked && !this.isWhite) {
-        transfer.push({
-          from: this.cocosAccount.accounts,
-          toAccount: this.to,
-          amount: this.amount
+      let whiteList = JSON.parse(localStorage.getItem("whiteList")) || [];
+      if (this.checked && !this.isWhite && result) {
+        whiteList.push({
+          domain: this.app.origin,
+          account: this.cocosAccount.accounts,
+          createTime: this.$moment().format("x")
         });
-        localStorage.setItem("tranferWhite", JSON.stringify(transfer));
+        localStorage.setItem("whiteList", JSON.stringify(whiteList));
         this.isWhite = false;
       }
       let returned = null;

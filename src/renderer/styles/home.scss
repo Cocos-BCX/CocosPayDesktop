@@ -6,10 +6,8 @@
   min-width: 350px;
   display: flex;
   flex-direction: column;
-  height: 2000px;
   border-right: 1px solid rgba(230, 233, 238, 1);
   padding-top: 20px;
-
 
   .search {
     margin: 0 15px;
@@ -28,6 +26,11 @@
       font-size: 16px;
       color: rgba(144, 148, 153, 1);
     }
+  }
+
+  #perfect-scroll {
+    position: relative;
+    height: 600px;
   }
 
   .total {
@@ -50,7 +53,7 @@
   .coins {
     padding: 0 15px;
     width: 100%;
-    max-height: 88px;
+    height: 88px;
     display: flex;
     align-items: center;
     border-bottom: 1px solid rgba(230, 233, 238, 1);

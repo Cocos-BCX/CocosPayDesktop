@@ -45,13 +45,25 @@ header {
   .right {
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
 
     .item {
-      width: 190px;
+      width: 200px;
       align-items: flex-end;
       display: flex;
       flex-direction: column;
       border-bottom: 1px solid rgba(200, 206, 212, 1);
+
+      &.memo {
+        width: 330px;
+
+        div {
+          width: 330px;
+          text-align: right;
+          color: #909499;
+          margin-bottom: 6px;
+        }
+      }
 
       span:nth-of-type(1) {
         color: #c7cace;
@@ -61,6 +73,11 @@ header {
       span:nth-of-type(2) {
         color: #909499;
         margin-bottom: 6px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 200px;
+        text-align: right;
       }
     }
   }

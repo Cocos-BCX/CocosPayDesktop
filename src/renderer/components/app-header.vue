@@ -1,9 +1,14 @@
 <template>
   <header class="header">
-    <section class="title cursor">{{$t('title.wallet')}}</section>
+    <section class="title">{{$t('title.wallet')}}</section>
     <section class="account">
-      <div class="mr40 cursor" v-if="!isLocked" @click="listShow">
-        <span>{{cocosAccount.accounts}}</span>
+      <div
+        class="mr40 cursor flex"
+        v-if="!isLocked"
+        @click="listShow"
+        v-click-outside="onClickOutside"
+      >
+        <div class="account-name">{{cocosAccount.accounts}}</div>
         <img v-if="accountType === 'wallet'" src="../assets/img/change.png" alt>
       </div>
       <section class="account-list cursor" v-if="selectAccount">
@@ -48,6 +53,7 @@
 //     delete el.__vueClickOutside__;
 //   }
 // };
+import vClickOutside from "v-click-outside";
 import Cocos from "../models/cocos";
 import { mapState, mapMutations, mapActions } from "vuex";
 import { setTimeout } from "timers";
@@ -57,6 +63,9 @@ export default {
       selectAccount: false,
       list: []
     };
+  },
+  directives: {
+    clickOutside: vClickOutside.directive
   },
   computed: {
     ...mapState(["cocosAccount", "isLocked", "accountType", "cocos"])
@@ -94,6 +103,9 @@ export default {
       });
       // }, 1000);
     },
+    onClickOutside() {
+      this.selectAccount = false;
+    },
 
     addAccounts() {
       this.AccountLogin(true);
@@ -116,6 +128,7 @@ export default {
           // SocketService.initialize();
           this.selectAccount = false;
           this.$emit("refresh");
+          this.$router.replace({ name: "home" });
           if (!this.cocos) {
             const cocos = Cocos.placeholder();
             this.setCocos(cocos);
@@ -147,6 +160,17 @@ header {
     display: flex;
     align-items: center;
     position: relative;
+  }
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+  .account-name {
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: right;
   }
   .account-list {
     width: 320px;

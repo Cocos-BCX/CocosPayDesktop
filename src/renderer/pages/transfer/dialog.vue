@@ -88,10 +88,7 @@ export default {
     }
     .content {
       text-align: right;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      width: 350px;
+      width: 380px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;

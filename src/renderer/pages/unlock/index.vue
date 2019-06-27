@@ -39,13 +39,17 @@ export default {
   },
   mounted() {
     this.init().then(res => {
+      this.getAccounts().then(res => {
+        this.setAccountType(res.current_account.mode);
+        this.connectSocket();
+      });
       this.AccountLogin(false);
     });
     this.AccountLogin(false);
   },
   name: "unlock",
   methods: {
-    ...mapActions(["init"]),
+    ...mapActions(["init", "IndexedDBAdd"]),
     ...mapMutations(["setAccountType"]),
     ...mapActions("wallet", ["getAccounts"]),
     ...mapMutations(["setAccount", "setCocos", "setLoginNoAlert"]),
@@ -70,15 +74,7 @@ export default {
               password: ""
             });
             this.setLoginNoAlert(true);
-            SocketService.initialize();
-            if (!this.cocos) {
-              const cocos = Cocos.placeholder();
-              this.setCocos(cocos);
-            } else if (!(this.cocos instanceof Cocos)) {
-              let sfj = JSON.parse(JSON.stringify(this.cocos));
-              const cocos = Cocos.fromJson(sfj);
-              this.setCocos(cocos);
-            }
+            this.connectSocket();
             this.$router.push({ name: "home" });
           } else {
             this.accountLogin();
@@ -88,7 +84,17 @@ export default {
         this.accountLogin();
       }
     },
-
+    connectSocket() {
+      SocketService.initialize();
+      if (!this.cocos) {
+        const cocos = Cocos.placeholder();
+        this.setCocos(cocos);
+      } else if (!(this.cocos instanceof Cocos)) {
+        let sfj = JSON.parse(JSON.stringify(this.cocos));
+        const cocos = Cocos.fromJson(sfj);
+        this.setCocos(cocos);
+      }
+    },
     accountLogin() {
       this.loginBCXAccount().then(res => {
         if (res.code === 1) {
@@ -96,15 +102,8 @@ export default {
             account: this.cocosAccount.accounts,
             password: ""
           });
-          SocketService.initialize();
-          if (!this.cocos) {
-            const cocos = Cocos.placeholder();
-            this.setCocos(cocos);
-          } else if (!(this.cocos instanceof Cocos)) {
-            let sfj = JSON.parse(JSON.stringify(this.cocos));
-            const cocos = Cocos.fromJson(sfj);
-            this.setCocos(cocos);
-          }
+          // this.IndexedDBAdd({ name: this.cocosAccount.accounts });
+          this.connectSocket();
           this.$router.push({ name: "home" });
         } else {
           this.init().then(res => {

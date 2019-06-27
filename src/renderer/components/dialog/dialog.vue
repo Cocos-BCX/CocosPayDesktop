@@ -25,13 +25,26 @@
     <el-dialog
       center
       :title="$t('title.login')"
-      :visible.sync="accountLogin"
+      :visible.sync="accountLogins"
       width="700px"
       :close-on-click-modal="false"
       @close="AccountLogin"
-      v-if="accountLogin"
+      v-if="accountLogins"
     >
       <Login/>
+    </el-dialog>
+    <el-dialog
+      center
+      :title="$t('title.update')"
+      :visible.sync="updates"
+      width="550px"
+      :close-on-press-escape="false"
+      :show-close="false"
+      :close-on-click-modal="false"
+      @close="setUpdate"
+      v-if="updates"
+    >
+      <Update/>
     </el-dialog>
   </div>
 </template>
@@ -41,14 +54,17 @@ import { mapState, mapMutations } from "vuex";
 import Create from "@/pages/createAccount";
 import BackupKey from "@/pages/backupKey";
 import Login from "@/pages/login";
+import Update from "./update";
 export default {
   name: "Dialogs",
   components: {
     Create,
     BackupKey,
-    Login
+    Login,
+    Update
   },
   computed: {
+    ...mapState(["update"]),
     ...mapState("common", ["registerWallet", "storePrivate", "accounLogin"]),
     Register: {
       get() {
@@ -62,9 +78,15 @@ export default {
       },
       set() {}
     },
-    accountLogin: {
+    accountLogins: {
       get() {
         return this.accounLogin;
+      },
+      set() {}
+    },
+    updates: {
+      get() {
+        return this.update;
       },
       set() {}
     }
@@ -74,7 +96,8 @@ export default {
       "WalletRegister",
       "privateStore",
       "AccountLogin"
-    ])
+    ]),
+    ...mapMutations(["setUpdate"])
   }
 };
 </script>

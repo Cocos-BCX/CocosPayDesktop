@@ -4,7 +4,7 @@
       <span>Signature Request</span>
       <span>{{cocosAccount.accounts}}</span>
     </header>
-    <section class="detail">
+    <section class="detail" v-if="popupType === apiActions.CALLCONTRACTFUNCTION">
       <section class="left">
         <p>{{$t('label.ptcontract')}} & {{$t('label.operation')}}</p>
         <p>{{payload.nameOrId}} -> {{payload.functionName}}</p>
@@ -22,9 +22,77 @@
           <span>operation</span>
           <span>{{payload.functionName}}</span>
         </div>
-        <div class="item">
+        <div class="item memo">
           <span>valueList</span>
-          <span>{{payload.valueList}}</span>
+          <div>{{payload.valueList}}</div>
+        </div>
+      </section>
+    </section>
+    <section class="detail" v-if="popupType === apiActions.CREATE_NH_ASSET_ORDER">
+      <section class="left">
+        <p>{{$t('label.otcAccount')}} & {{$t('label.operation')}}</p>
+        <p>{{payload.otcAccount}} -> creatNHAssetOrder</p>
+      </section>
+      <section class="right">
+        <div class="item">
+          <span>orderFee</span>
+          <span>{{payload.orderFee}}</span>
+        </div>
+        <div class="item">
+          <span>NHAssetId</span>
+          <span>{{payload.NHAssetId}}</span>
+        </div>
+        <div class="item">
+          <span>price priceAssetId</span>
+          <span>{{payload.price}}{{payload.priceAssetId}}</span>
+        </div>
+        <div class="item">
+          <span>expiration</span>
+          <span>{{payload.expiration}}</span>
+        </div>
+        <div class="item memo">
+          <span>memo</span>
+          <div>{{payload.memo}}</div>
+        </div>
+      </section>
+    </section>
+    <section class="detail" v-if="popupType === apiActions.FILL_NH_ASSET_ORDER">
+      <section class="left">
+        <p>account & {{$t('label.operation')}}</p>
+        <p>{{cocosAccount.accounts}} -> fillNHAssetOrder</p>
+      </section>
+      <section class="right">
+        <div class="item">
+          <span>orderId</span>
+          <span>{{payload.orderId}}</span>
+        </div>
+      </section>
+    </section>
+    <section class="detail" v-if="popupType === apiActions.CANCEL_NH_ASSET_ORDER">
+      <section class="left">
+        <p>account & {{$t('label.operation')}}</p>
+        <p>{{cocosAccount.accounts}} -> cancelNHAssetOrder</p>
+      </section>
+      <section class="right">
+        <div class="item">
+          <span>orderId</span>
+          <span>{{payload.orderId}}</span>
+        </div>
+      </section>
+    </section>
+    <section class="detail" v-if="popupType === apiActions.TRANSFER_NH_ASSET">
+      <section class="left">
+        <p>account & {{$t('label.operation')}}</p>
+        <p>{{cocosAccount.accounts}} -> transferNHAsset</p>
+      </section>
+      <section class="right">
+        <div class="item">
+          <span>toAccount</span>
+          <span>{{payload.toAccount}}</span>
+        </div>
+        <div class="item">
+          <span>NHAssetIds</span>
+          <span>{{payload.NHAssetIds}}</span>
         </div>
       </section>
     </section>
@@ -40,14 +108,12 @@
     </footer>
   </section>
 </template>
-
 <script>
-import { mapState, mapMutations } from "vuex";
-import PopupService from "../../../services/PopupService";
-import { Popup } from "../../../models/popups/Popup";
+import { mapState, mapMutations, mapActions } from "vuex";
+import * as ApiActions from "../../../models/apiActions";
 import { GetBCXWithState } from "../../../utils/bcx";
 import utils from "../../../utils/utils";
-
+import AuthorizedApp from "../../../models/authorizedApp";
 export default {
   data() {
     return {
@@ -57,39 +123,41 @@ export default {
       balances: [],
       accountsArr: [],
       customAmount: 0,
-      isWhite: false
+      isWhite: false,
+      fee: "",
+      apiActions: ApiActions
     };
   },
   computed: {
-    ...mapState(["state", "cocosAccount"])
+    ...mapState(["state", "cocosAccount", "isLocked"]),
+    app() {
+      return AuthorizedApp.fromJson(this.payload);
+    }
   },
   mounted() {
-    let contract = JSON.parse(localStorage.getItem("contractWhite")) || [];
-    if (contract.length) {
-      contract.forEach(item => {
-        if (
-          utils.compare(item, {
-            from: this.cocosAccount.accounts,
-            nameOrId: this.payload.nameOrId,
-            functionName: this.payload.functionName
-          })
-        ) {
-          this.isWhite = true;
-          this.returnResult(true);
-        }
-      });
+    let whiteList = JSON.parse(localStorage.getItem("whiteList")) || [];
+    let white = whiteList.some(ele => {
+      return (
+        ele.domain === this.app.origin &&
+        ele.account === this.cocosAccount.accounts
+      );
+    });
+    if (white) {
+      this.returnResult(true);
+      this.isWhite = true;
     }
   },
   methods: {
+    ...mapMutations("wallet", ["addWhiteList"]),
     returnResult(result) {
-      let contract = JSON.parse(localStorage.getItem("contractWhite")) || [];
-      if (this.checked && !this.isWhite) {
-        contract.push({
-          from: this.cocosAccount.accounts,
-          nameOrId: this.payload.nameOrId,
-          functionName: this.payload.functionName
+      let whiteList = JSON.parse(localStorage.getItem("whiteList")) || [];
+      if (this.checked && !this.isWhite && result) {
+        whiteList.push({
+          domain: this.app.origin,
+          account: this.cocosAccount.accounts,
+          createTime: this.$moment().format("x")
         });
-        localStorage.setItem("contractWhite", JSON.stringify(contract));
+        localStorage.setItem("whiteList", JSON.stringify(whiteList));
         this.isWhite = false;
       }
       let returned = null;
@@ -120,7 +188,7 @@ export default {
       return this.getBalance(account);
     }
   },
-  props: ["payload", "pluginOrigin"]
+  props: ["payload", "pluginOrigin", "popupType"]
 };
 </script>
 
