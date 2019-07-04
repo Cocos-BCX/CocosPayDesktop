@@ -14,7 +14,7 @@ Install local dependencies by using
 
 npm install
 
-npm install bcxjs-api@v1.3.12 --registry=http://39.105.4.131:8080/ -S. 
+npm install bcxjs-api --registry=http://39.105.4.131:8080/ -S. 
 
 Build with development 
 npm run dev 
