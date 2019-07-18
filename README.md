@@ -1,3 +1,5 @@
+[中文](https://github.com/Cocos-BCX/CocosPayDesktop/blob/master/README_cn.md)
+
 ## CocosDesktop:
 
 ##### CocosDesktop is a Desktop Application for Cocos-BCX.
