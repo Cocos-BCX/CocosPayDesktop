@@ -24,9 +24,5 @@ Node.js version 11.+.+.
 3.npm run build （.exe/dmg 在 `./build`文件夹下）
 ```
 
-解压包 `build`
-
-
-
 ## 怎样使用CocosDesktop
 ##### 示例. [cocos-dice](https://github.com/Cocos-BCX/cocos-dice)
