@@ -1,6 +1,6 @@
 ## CocosDesktop:
 
-##### CocosDesktop是Cocos-BCX的桌面应用
+##### CocosDesktop 是 Cocos-BCX 的桌面应用
 ##### [windows](https://cocosbcx.oss-cn-beijing.aliyuncs.com/CocosDesktop.exe)
 ##### [mac](https://cocosbcx.oss-cn-beijing.aliyuncs.com/CocosDesktop.dmg)
 
@@ -24,5 +24,5 @@ Node.js version 11.+.+.
 3.npm run build （.exe/dmg 在 `./build`文件夹下）
 ```
 
-## 怎样使用CocosDesktop
+## 怎样使用 CocosDesktop
 ##### 示例. [cocos-dice](https://github.com/Cocos-BCX/cocos-dice)
