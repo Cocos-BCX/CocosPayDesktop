@@ -47,6 +47,7 @@ import PopupService from "../../../services/PopupService";
 import { Popup } from "../../../models/popups/Popup";
 import { GetBCXWithState } from "../../../utils/bcx";
 import utils from "../../../utils/utils";
+import Storage from "../../../utils/storage";
 import AuthorizedApp from "../../../models/authorizedApp";
 export default {
   data() {
@@ -103,7 +104,7 @@ export default {
         balance: await this.getBalance(account)
       });
     });
-    let whiteList = JSON.parse(localStorage.getItem("whiteList")) || [];
+    let whiteList = Storage.get("whiteList") || [];
     let white = whiteList.some(ele => {
       return (
         ele.domain === this.app.origin &&
@@ -118,14 +119,14 @@ export default {
   methods: {
     ...mapMutations("wallet", ["addWhiteList"]),
     returnResult(result) {
-      let whiteList = JSON.parse(localStorage.getItem("whiteList")) || [];
+      let whiteList = Storage.get("whiteList") || [];
       if (this.checked && !this.isWhite && result) {
         whiteList.push({
           domain: this.app.origin,
           account: this.cocosAccount.accounts,
           createTime: this.$moment().format("x")
         });
-        localStorage.setItem("whiteList", JSON.stringify(whiteList));
+        Storage.set("whiteList", whiteList);
         this.isWhite = false;
       }
       let returned = null;

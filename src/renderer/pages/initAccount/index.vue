@@ -1,6 +1,18 @@
 <template>
-  <section>
-    <logo-header/>
+  <section id="init">
+    <header>
+      <img src="../../assets/img/logo.png" @click="logoutBCXAccount" alt />
+      <!-- <section class="select-lang no-bg">
+        <el-select class="language-select" v-model="lang" @change="changeLanguage">
+          <el-option
+            v-for="(item, index) in langs"
+            :key="index"
+            :label="item.name"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+      </section> -->
+    </header>
     <section class="des-center" @click="logoutBCXAccount()">{{$t('title.title')}}</section>
     <section class="introduction">{{$t('message.intro')}}</section>
     <section class="app-container text-center">
@@ -10,21 +22,23 @@
   </section>
 </template>
 <script>
-import LogoHeader from "../../components/logo-header";
 import { mapState, mapMutations, mapActions } from "vuex";
 import Storage from "../../utils/storage";
 import { remote, ipcRenderer } from "electron";
 export default {
-  components: {
-    LogoHeader
-  },
   data() {
     return {
-      currentCreateVisible: false
+      currentCreateVisible: false,
+      lang: "",
+      lockTime: "",
+      langs: [
+        { name: "简体中文", value: "ZH" },
+        { name: "English", value: "EN" }
+      ]
     };
   },
   computed: {
-    ...mapState(["currentCreateAccount", "firstLanguage"]),
+    ...mapState(["currentCreateAccount", "firstLanguage", "curLng"]),
     ...mapState("common", ["registerWallet"])
   },
   created() {
@@ -54,6 +68,9 @@ export default {
   mounted() {
     // this.UpdateVersion();
     // this.IndexedDBQuery()
+    console.log(this.firstLanguage);
+    console.log(this.curLng);
+
     if (!this.firstLanguage) {
       this.$i18n.locale =
         remote.app.localLanguage === "zh_CN" ||
@@ -61,6 +78,9 @@ export default {
           ? "ZH"
           : "EN";
       this.setCurLng(this.$i18n.locale);
+      this.lang = this.$i18n.locale;
+    } else {
+      this.lang = this.curLng;
     }
     this.UpdateVersion().then(res => {
       if (remote.app.loadCocosDesktop) {
@@ -78,7 +98,8 @@ export default {
       "setAccountType",
       "setLogin",
       "setCurLng",
-      "setUpdate"
+      "setUpdate",
+      "setFirstLanguage"
     ]),
     ...mapActions("wallet", ["getAccounts", "deleteWallet", "addAccount"]),
     ...mapActions([
@@ -95,6 +116,11 @@ export default {
       "privateStore",
       "AccountLogin"
     ]),
+    changeLanguage(e) {
+      this.setFirstLanguage(true);
+      this.$i18n.locale = this.lang;
+      this.setCurLng(this.lang);
+    },
     closedDialog() {
       this.currentCreateVisible = false;
     },
@@ -123,6 +149,48 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../../theme/v1/variable";
+#init {
+  header {
+    position: relative;
+    height: 216px;
+    border-bottom: 1px solid #e6e6e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+      90deg,
+      rgba(48, 191, 253, 1) 0%,
+      rgba(58, 123, 255, 1) 100%
+    );
+    span {
+      font-size: 20px;
+      padding-left: 10px;
+    }
+    img {
+      // height: 125px;
+      width: 134px;
+    }
+    .select-lang {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 60px !important;
+      .language-select {
+        background: none !important;
+        width: 120px !important;
+        .el-input__inner {
+          background: none !important;
+          border-bottom: none !important;
+        }
+        input {
+          text-align: center !important;
+          background-color: transparent !important;
+        }
+      }
+    }
+  }
+}
+
 .privateKey-area {
   background-color: $bg-shallow;
   font-size: 12px;

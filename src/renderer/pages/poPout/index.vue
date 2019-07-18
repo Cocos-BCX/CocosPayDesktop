@@ -15,7 +15,7 @@
         @returned="returnResult"
       ></transfer-request>
       <contract
-        v-if="popupType === apiActions.CALLCONTRACTFUNCTION || popupType === apiActions.CREATE_NH_ASSET_ORDER || popupType === apiActions.TRANSFER_NH_ASSET || popupType === apiActions.FILL_NH_ASSET_ORDER || popupType === apiActions.CANCEL_NH_ASSET_ORDER"
+        v-if="[apiActions.CALLCONTRACTFUNCTION,apiActions.CREATE_NH_ASSET_ORDER,apiActions.TRANSFER_NH_ASSET,apiActions.FILL_NH_ASSET_ORDER ,apiActions.CANCEL_NH_ASSET_ORDER].indexOf(popupType) !== -1"
         :payload="payload"
         :popupType="popupType"
         :plugin-origin="pluginOrigin"

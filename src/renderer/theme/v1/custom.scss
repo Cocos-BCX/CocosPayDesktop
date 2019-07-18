@@ -104,12 +104,6 @@
   }
 }
 
-.no-bg {
-  input {
-    background-color: transparent;
-  }
-}
-
 .el-select {
   font-size: 16px;
   width: 100%;
@@ -308,4 +302,14 @@
   color: $primary-color;
   border-radius: 6px !important;
   border: 1px solid;
+}
+
+.no-bg {
+  .el-input {
+    background-color: none !important;
+
+    input {
+      background-color: none !important;
+    }
+  }
 }

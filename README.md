@@ -13,23 +13,15 @@ Node.js version 11.+.+.
 ## Install dependence:
 
 ```
-1.npm install bcxjs-api --registry=http://39.105.4.131:8080/ -S
+1.npm install
 ```
 
 ```
-2.npm install
+2.npm run dev
 ```
 
 ```
-3.npm install sass-loader node-sass -S
-```
-
-```
-4.npm run dev
-```
-
-```
-5.npm run build （.exe/dmg will be found in `./build`）
+3.npm run build （.exe/dmg will be found in `./build`）
 ```
 
 Uncompressed build 

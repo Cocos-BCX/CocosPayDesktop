@@ -1,6 +1,6 @@
 <template>
   <header>
-    <img src="../assets/img/logo.png" @click="logoutBCXAccount" alt>
+    <img src="../assets/img/logo.png" @click="logoutBCXAccount" alt />
   </header>
 </template>
 <script>

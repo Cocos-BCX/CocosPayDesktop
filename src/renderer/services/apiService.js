@@ -5,6 +5,7 @@ import {
 import store from '../store'
 import CommonJs from '../config/common'
 import I18n from '../languages'
+import Storage from "../utils/storage";
 import PopupService from '../services/PopupService'
 import {
   Popup
@@ -51,21 +52,13 @@ export default class ApiService {
   static async [Actions.CREATE_NH_ASSET_ORDER](request) {
     return new Promise(resolve => {
       let response
-      PopupService.push(Popup.popout(request, async ({
-        result
-      }) => {
-        if (!result) {
-          return resolve(response = {
-            id: request.id,
-            result: {
-              type: "signature_rejected",
-              code: 402,
-              // isError: true,
-              message: 'User rejected the signature request'
-            }
-          })
-        }
-        response = GetBCXWithState().creatNHAssetOrder({
+      let whiteList = Storage.get('whiteList') || []
+      let white = whiteList.some(ele => {
+        console.log(ele.domain === request.payload.origin && ele.account === store.state.cocosAccount.accounts);
+        return ele.domain === request.payload.origin && ele.account === store.state.cocosAccount.accounts
+      })
+      if (white) {
+        GetBCXWithState().creatNHAssetOrder({
           otcAccount: request.payload.otcAccount,
           orderFee: request.payload.orderFee,
           NHAssetId: request.payload.NHAssetId,
@@ -92,28 +85,63 @@ export default class ApiService {
             }
           }
         })
-      }))
+      } else {
+        PopupService.push(Popup.popout(request, async ({
+          result
+        }) => {
+          if (!result) {
+            return resolve(response = {
+              id: request.id,
+              result: {
+                type: "signature_rejected",
+                code: 402,
+                // isError: true,
+                message: 'User rejected the signature request'
+              }
+            })
+          }
+          response = GetBCXWithState().creatNHAssetOrder({
+            otcAccount: request.payload.otcAccount,
+            orderFee: request.payload.orderFee,
+            NHAssetId: request.payload.NHAssetId,
+            runtime: request.payload.runtime,
+            price: request.payload.price,
+            priceAssetId: request.payload.priceAssetId,
+            expiration: request.payload.expiration,
+            memo: request.payload.memo,
+            callback: function (res) {
+              if (res.code !== 1) {
+                return resolve({
+                  // id: request.id,
+                  // message: CommonJs.getI18nMessages(I18n).error[res.code],
+                  // isError: true
+                  id: request.id,
+                  result: res
+                })
+              } else {
+                store.dispatch('account/UserAccount')
+                return resolve({
+                  id: request.id,
+                  result: res
+                })
+              }
+            }
+          })
+        }))
+      }
     })
   }
 
   static async [Actions.TRANSFER_NH_ASSET](request) {
     return new Promise(resolve => {
       let response
-      PopupService.push(Popup.popout(request, async ({
-        result
-      }) => {
-        if (!result) {
-          return resolve(response = {
-            id: request.id,
-            result: {
-              type: "signature_rejected",
-              code: 402,
-              // isError: true,
-              message: 'User rejected the signature request'
-            }
-          })
-        }
-        response = GetBCXWithState().transferNHAsset({
+      let whiteList = Storage.get('whiteList') || []
+      let white = whiteList.some(ele => {
+        console.log(ele.domain === request.payload.origin && ele.account === store.state.cocosAccount.accounts);
+        return ele.domain === request.payload.origin && ele.account === store.state.cocosAccount.accounts
+      })
+      if (white) {
+        GetBCXWithState().transferNHAsset({
           toAccount: request.payload.toAccount,
           NHAssetIds: request.payload.NHAssetIds,
           callback: function (res) {
@@ -131,27 +159,54 @@ export default class ApiService {
             }
           }
         })
-      }))
+      } else {
+        PopupService.push(Popup.popout(request, async ({
+          result
+        }) => {
+          if (!result) {
+            return resolve(response = {
+              id: request.id,
+              result: {
+                type: "signature_rejected",
+                code: 402,
+                // isError: true,
+                message: 'User rejected the signature request'
+              }
+            })
+          }
+          response = GetBCXWithState().transferNHAsset({
+            toAccount: request.payload.toAccount,
+            NHAssetIds: request.payload.NHAssetIds,
+            callback: function (res) {
+              if (res.code !== 1) {
+                return resolve({
+                  id: request.id,
+                  result: res
+                })
+              } else {
+                store.dispatch('account/UserAccount')
+                return resolve({
+                  id: request.id,
+                  result: res
+                })
+              }
+            }
+          })
+        }))
+      }
+
     })
   }
   static async [Actions.CANCEL_NH_ASSET_ORDER](request) {
     return new Promise(resolve => {
       let response
-      PopupService.push(Popup.popout(request, async ({
-        result
-      }) => {
-        if (!result) {
-          return resolve(response = {
-            id: request.id,
-            result: {
-              type: "signature_rejected",
-              code: 402,
-              // isError: true,
-              message: 'User rejected the signature request'
-            }
-          })
-        }
-        response = GetBCXWithState().cancelNHAssetOrder({
+      let whiteList = Storage.get('whiteList') || []
+      let white = whiteList.some(ele => {
+        console.log(ele.domain === request.payload.origin && ele.account === store.state.cocosAccount.accounts);
+        return ele.domain === request.payload.origin && ele.account === store.state.cocosAccount.accounts
+      })
+      if (white) {
+        GetBCXWithState().cancelNHAssetOrder({
           orderId: request.payload.orderId,
           callback: function (res) {
             if (res.code !== 1) {
@@ -168,27 +223,53 @@ export default class ApiService {
             }
           }
         })
-      }))
+      } else {
+        PopupService.push(Popup.popout(request, async ({
+          result
+        }) => {
+          if (!result) {
+            return resolve(response = {
+              id: request.id,
+              result: {
+                type: "signature_rejected",
+                code: 402,
+                // isError: true,
+                message: 'User rejected the signature request'
+              }
+            })
+          }
+          response = GetBCXWithState().cancelNHAssetOrder({
+            orderId: request.payload.orderId,
+            callback: function (res) {
+              if (res.code !== 1) {
+                return resolve({
+                  id: request.id,
+                  result: res
+                })
+              } else {
+                store.dispatch('account/UserAccount')
+                return resolve({
+                  id: request.id,
+                  result: res
+                })
+              }
+            }
+          })
+        }))
+      }
+
     })
   }
   static async [Actions.FILL_NH_ASSET_ORDER](request) {
     return new Promise(resolve => {
       let response
-      PopupService.push(Popup.popout(request, async ({
-        result
-      }) => {
-        if (!result) {
-          return resolve(response = {
-            id: request.id,
-            result: {
-              type: "signature_rejected",
-              code: 402,
-              // isError: true,
-              message: 'User rejected the signature request'
-            }
-          })
-        }
-        response = GetBCXWithState().fillNHAssetOrder({
+      let whiteList = Storage.get('whiteList') || []
+      let white = whiteList.some(ele => {
+        console.log(ele.domain === request.payload.origin && ele.account === store.state.cocosAccount.accounts);
+        return ele.domain === request.payload.origin && ele.account === store.state.cocosAccount.accounts
+      })
+      if (white) {
+        GetBCXWithState().fillNHAssetOrder({
           orderId: request.payload.orderId,
           callback: function (res) {
             if (res.code !== 1) {
@@ -205,28 +286,54 @@ export default class ApiService {
             }
           }
         })
-      }))
+      } else {
+        PopupService.push(Popup.popout(request, async ({
+          result
+        }) => {
+          if (!result) {
+            return resolve(response = {
+              id: request.id,
+              result: {
+                type: "signature_rejected",
+                code: 402,
+                // isError: true,
+                message: 'User rejected the signature request'
+              }
+            })
+          }
+          response = GetBCXWithState().fillNHAssetOrder({
+            orderId: request.payload.orderId,
+            callback: function (res) {
+              if (res.code !== 1) {
+                return resolve({
+                  id: request.id,
+                  result: res
+                })
+              } else {
+                store.dispatch('account/UserAccount')
+                return resolve({
+                  id: request.id,
+                  result: res
+                })
+              }
+            }
+          })
+        }))
+      }
+
     })
   }
 
   static async [Actions.CALLCONTRACTFUNCTION](request) {
     return new Promise(resolve => {
       let response
-      PopupService.push(Popup.popout(request, async ({
-        result
-      }) => {
-        if (!result) {
-          return resolve(response = {
-            id: request.id,
-            result: {
-              type: "signature_rejected",
-              code: 402,
-              // isError: true,
-              message: 'User rejected the signature request'
-            }
-          })
-        }
-        response = GetBCXWithState().callContractFunction({
+      let whiteList = Storage.get('whiteList') || []
+      let white = whiteList.some(ele => {
+        console.log(ele.domain === request.payload.origin && ele.account === store.state.cocosAccount.accounts);
+        return ele.domain === request.payload.origin && ele.account === store.state.cocosAccount.accounts
+      })
+      if (white) {
+        GetBCXWithState().callContractFunction({
           nameOrId: request.payload.nameOrId,
           functionName: request.payload.functionName,
           valueList: request.payload.valueList,
@@ -247,28 +354,57 @@ export default class ApiService {
             }
           }
         })
-      }))
+      } else {
+        PopupService.push(Popup.popout(request, async ({
+          result
+        }) => {
+          if (!result) {
+            return resolve(response = {
+              id: request.id,
+              result: {
+                type: "signature_rejected",
+                code: 402,
+                // isError: true,
+                message: 'User rejected the signature request'
+              }
+            })
+          }
+          response = GetBCXWithState().callContractFunction({
+            nameOrId: request.payload.nameOrId,
+            functionName: request.payload.functionName,
+            valueList: request.payload.valueList,
+            runtime: request.payload.runtime,
+            onlyGetFee: request.payload.onlyGetFee,
+            callback: function (res) {
+              if (res.code !== 1) {
+                return resolve({
+                  id: request.id,
+                  result: res
+                })
+              } else {
+                store.dispatch('account/UserAccount')
+                return resolve({
+                  id: request.id,
+                  result: res
+                })
+              }
+            }
+          })
+        }))
+      }
+
     })
   }
-
   static async [Actions.REQUEST_TRANSFER](request) {
     return new Promise(resolve => {
       let response
-      PopupService.push(Popup.popout(request, async ({
-        result
-      }) => {
-        if (!result) {
-          return resolve(response = {
-            id: request.id,
-            result: {
-              type: "signature_rejected",
-              code: 402,
-              // isError: true,
-              message: 'User rejected the signature request'
-            }
-          })
-        }
-        response = GetBCXWithState().transferAsset({
+      let whiteList = Storage.get('whiteList') || []
+      let white = whiteList.some(ele => {
+        console.log(ele.domain === request.payload.origin && ele.account === store.state.cocosAccount.accounts);
+        return ele.domain === request.payload.origin && ele.account === store.state.cocosAccount.accounts
+      })
+      if (white) {
+        GetBCXWithState().transferAsset({
           fromAccount: store.state.cocosAccount.accounts,
           toAccount: request.payload.toAccount,
           amount: request.payload.amount,
@@ -290,7 +426,45 @@ export default class ApiService {
             })
           }
         })
-      }))
+      } else {
+        PopupService.push(Popup.popout(request, async ({
+          result
+        }) => {
+          if (!result) {
+            return resolve(response = {
+              id: request.id,
+              result: {
+                type: "signature_rejected",
+                code: 402,
+                // isError: true,
+                message: 'User rejected the signature request'
+              }
+            })
+          }
+          response = GetBCXWithState().transferAsset({
+            fromAccount: store.state.cocosAccount.accounts,
+            toAccount: request.payload.toAccount,
+            amount: request.payload.amount,
+            memo: request.payload.memo,
+            assetId: request.payload.coin,
+            isPropos: false,
+            onlyGetFee: false
+          }).then((res) => {
+            if (res.code !== 1) {
+              return resolve({
+                id: request.id,
+                result: res
+              })
+            } else {
+              store.dispatch('account/UserAccount')
+              return resolve({
+                id: request.id,
+                result: res,
+              })
+            }
+          })
+        }))
+      }
     })
   }
 }

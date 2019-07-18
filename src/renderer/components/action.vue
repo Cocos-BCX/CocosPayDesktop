@@ -120,7 +120,7 @@ export default {
       }
       &:nth-of-type(2) {
         width: 18.6%;
-        margin-left: 4%;
+        margin-left: 3%;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
@@ -134,7 +134,7 @@ export default {
       }
       &:nth-of-type(4) {
         width: 30.6%;
-        margin-left: 4%;
+        margin-left: 3%;
       }
       &:nth-of-type(5) {
         min-width: 70px;

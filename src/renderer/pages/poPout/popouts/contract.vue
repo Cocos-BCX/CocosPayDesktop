@@ -113,6 +113,7 @@ import { mapState, mapMutations, mapActions } from "vuex";
 import * as ApiActions from "../../../models/apiActions";
 import { GetBCXWithState } from "../../../utils/bcx";
 import utils from "../../../utils/utils";
+import Storage from "../../../utils/storage";
 import AuthorizedApp from "../../../models/authorizedApp";
 export default {
   data() {
@@ -135,7 +136,7 @@ export default {
     }
   },
   mounted() {
-    let whiteList = JSON.parse(localStorage.getItem("whiteList")) || [];
+    let whiteList = Storage.get("whiteList") || [];
     let white = whiteList.some(ele => {
       return (
         ele.domain === this.app.origin &&
@@ -150,14 +151,14 @@ export default {
   methods: {
     ...mapMutations("wallet", ["addWhiteList"]),
     returnResult(result) {
-      let whiteList = JSON.parse(localStorage.getItem("whiteList")) || [];
+      let whiteList = Storage.get("whiteList") || [];
       if (this.checked && !this.isWhite && result) {
         whiteList.push({
           domain: this.app.origin,
           account: this.cocosAccount.accounts,
           createTime: this.$moment().format("x")
         });
-        localStorage.setItem("whiteList", JSON.stringify(whiteList));
+        Storage.set("whiteList", whiteList);
         this.isWhite = false;
       }
       let returned = null;
