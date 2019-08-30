@@ -1,4 +1,4 @@
-[中文](https://github.com/Cocos-BCX/CocosPayDesktop/blob/master/README_cn.md)
+[中文](https://github.com/CocosBCX/CocosPayDesktop/blob/master/README_cn.md)
 
 ## CocosDesktop:
 
@@ -31,4 +31,4 @@ Uncompressed build
 
 
 ## How to use for dapp?  
-##### Here is a dapp sample. [cocos-dice](https://github.com/Cocos-BCX/cocos-dice)
+##### Here is a dapp sample. [cocos-dice](https://github.com/CocosBCX/cocos-dice)
