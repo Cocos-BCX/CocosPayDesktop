@@ -97,7 +97,7 @@
     "is-typedarray": "^1.0.0",
     "jazzicon": "^1.5.0",
     "js-sha3": "^0.8.0",
-    "json5": "^2.1.0",
+    "json5": "^2.2.2",
     "jssha": "^2.3.1",
     "loader-utils": "^1.2.3",
     "lodash": "^4.17.4",
